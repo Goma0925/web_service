@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Django_practice/.idea/Django_practice.iml" filepath="$PROJECT_DIR$/../Django_practice/.idea/Django_practice.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Unnamed webservice.iml" filepath="$PROJECT_DIR$/.idea/Unnamed webservice.iml" />
+    </modules>
+  </component>
+</project>

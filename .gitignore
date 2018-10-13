@@ -1,0 +1,7 @@
+__pycache__
+staticfiles
+db.sqlite3
+local_settings.py
+*.py[co]
+documents
+venv
