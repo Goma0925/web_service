@@ -7,4 +7,5 @@ with open("requirements.txt", "w") as file:
     for i in range(len(modules)):
         content += (str(modules[i]).split(" ")[0] + "==" + str(modules[i]).split(" ")[1]) + "\n"
     file.write(content)
+    print("All modules added to requirements.txt.")
 
