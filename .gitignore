@@ -6,3 +6,4 @@ local_settings.py
 documents
 venv
 deploy.sh
+logs.sh

@@ -5,7 +5,7 @@ import sys
 
 if __name__ == "__main__":
     try:
-        if sys.argv[1] == "log":
+        if sys.argv[1] == "logs":
             development_log_manager.record_log()
     except ImportError as exc:
         raise ImportError(
