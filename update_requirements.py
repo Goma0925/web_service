@@ -1,6 +1,6 @@
 import pkg_resources
 
-#Write the modules installed in the current virtual env into requirements.txt
+#Write the modules installed of the current virtualenv into requirements.txt
 modules = [module for module in pkg_resources.working_set]
 with open("requirements.txt", "w") as file:
     content = ""
