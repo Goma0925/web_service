@@ -28,7 +28,7 @@ SECRET_KEY = 'mf#0959#k*ximj%r+8#-y8g&l)5-c^56ji=+w9p#!7%3pgm_q-'
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["meetlocals.herokuapp.com"]
 
 
 # Application definition
