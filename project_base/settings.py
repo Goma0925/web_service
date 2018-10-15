@@ -132,7 +132,7 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 #WhiteNoise static file caching storage settings. See: http://whitenoise.evans.io/en/stable/django.html#django-middleware
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 #Logging cofiguration on Heroku. Reference: https://chrxr.com/django-error-logging-configuration-heroku/
 LOGGING = {
