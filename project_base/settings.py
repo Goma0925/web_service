@@ -28,8 +28,8 @@ SECRET_KEY = 'mf#0959#k*ximj%r+8#-y8g&l)5-c^56ji=+w9p#!7%3pgm_q-'
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 
-ALLOWED_HOSTS = ["meetlocals.herokuapp.com"]
-
+ALLOWED_HOSTS = ["meetlocals.herokuapp.com",
+                 "127.0.0.1"]
 
 # Application definition
 AUTH_USER_MODEL = 'users.User'
@@ -88,8 +88,11 @@ WSGI_APPLICATION = 'project_base.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.path.join(BASE_DIR, 'db.postgresql'),
+        'USER': 'admin',
+        'PASSWORD': 'Tsumagoi!0925',
+        'HOST': 'https://meetlocals.herokuapp.com/',
     }
 }
 
