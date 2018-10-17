@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.postgresql'),
         'USER': 'admin',
         'PASSWORD': 'Tsumagoi!0925',
-        'HOST': 'meetlocals.herokuapp.com/',
+        'HOST': 'localhost',
     }
 }
 
