@@ -1,0 +1,2 @@
+git remote set-url origin https://github.com/Goma0925/web_service    ##TO set URL
+git push -u origin master   #To commit to GitHub
