@@ -2,7 +2,7 @@ import pkg_resources
 
 #Write the modules installed of the current virtualenv into requirements.txt
 modules = [module for module in pkg_resources.working_set]
-with open("requirements.txt", "w") as file:
+with open("requirements1.txt", "w") as file:
     content = ""
     for i in range(len(modules)):
         content += (str(modules[i]).split(" ")[0] + "==" + str(modules[i]).split(" ")[1]) + "\n"

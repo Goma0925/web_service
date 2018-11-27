@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block additional_head %}
+    <link href="{% static 'css/event_page.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div class="container">
+
+      <div class="row">
+        <div class="col-xs-12 col-md-9" >
+          <div class="box" >
+            <center><h1>{{event.name}} by Host</h1></center>
+            <center><img style="width: 600px; height: 400px;" alt="Event Image" src="{% static '{{event.picture.url}}' %}"/></center>
+            <div class="event_info">
+              <span>{{event.date}}&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
+              <span>{{event.start_time}} ~ {{event.end_time}}</span><br>
+              <span>Language used:&nbsp;{{event.language}}</span><br>
+              <span>{{event.tags}}</span><br>
+              <hr>
+              <center>
+                <button type="button" class="btn btn-warning btn-lg">Add to watch list</button>
+                <button type="button" class="btn btn-danger btn-lg">&nbsp;Join this event!&nbsp;</button>
+              </center>
+              <br>
+            </div>
+            <center><font size="5">What you will experience</font></center>
+            <br>
+            <p>{{event.description}}</p>
+          </div>
+        </div>
+        <div class="col-xs-12 col-md-3">
+          <div class="box">
+          content coming soon
+          </div>
+        </div>
+      </div>
+      {% endblock %}

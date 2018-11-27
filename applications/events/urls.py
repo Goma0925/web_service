@@ -4,5 +4,7 @@ from . import views
 app_name = "events"
 
 urlpatterns = [
-    path("", views.eventboard, name="eventboard"),
+    path("eventboard/", views.eventboard, name="eventboard"),
+    path("eventboard/page=<int:page>", views.eventboard, name="eventboard",),
+    path("events/<str:event_id>/", views.event_page, name="event_page"),
 ]

@@ -4,12 +4,12 @@ import datetime
 import os
 from random import randint
 import string
-from imagekit_cropper.fields import ImageCropField, InstanceSpecField, InstanceFormatSpecField
-from imagekit_cropper.processors import PositionCrop, PositionAndFormatCrop, FormatProcessor
+from imagekit.models import ImageSpecField
+from imagekit.processors import crop
 
 class Location(models.Model):
     location_name = models.CharField(max_length=90, blank=False)
-    #slug = models.SlugField(max_length=255, null=True)
+    slug = models.SlugField(max_length=255, null=True)
     #address
 
     def set_location_name(self, location_name):
@@ -24,7 +24,7 @@ class Event(models.Model):
     date = models.DateField(default=datetime.date.today, blank=False)
     start_time = models.TimeField(default=None, blank=False)
     end_time = models.TimeField(default=None, blank=False)
-    image = models.ImageField(upload_to = 'event_images/', default="place_holders/place_holder_700x400.png")
+    picture = models.ImageField(upload_to = 'event_images/', default="place_holders/place_holder_700x400.png")
     language = models.CharField(default="English", max_length=50, blank=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, blank=False)
     description = models.CharField(max_length=160, blank=False)
@@ -37,7 +37,7 @@ class Event(models.Model):
 
 
     def create_event(self, name, date, start_time, end_time, location, description, host_name, host):
-        #self.event_id = #Do not allow duplicates
+        #self.event_id = #
         self.name = name
         self.date = date
         self.start_time = start_time
