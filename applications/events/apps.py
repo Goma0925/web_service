@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class ShowcaseConfig(AppConfig):
-    name = 'events'
+class EventsConfig(AppConfig):
+    name = 'applications.events'
+    label = "events"

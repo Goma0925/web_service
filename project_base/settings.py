@@ -10,15 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
-import os
+import os, sys
 import django_heroku
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
-
+sys.path.insert(0, os.path.join(BASE_DIR, 'applications'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -33,7 +34,7 @@ ALLOWED_HOSTS = ["meetlocals.herokuapp.com",
                  "127.0.0.1"]
 
 # Application definition
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = "users.User" #NEED to revise
 #ADDED WHEN BEGUGGING ADMIN
 AUTHENTICATION_BACKENDS = (
         #'django.contrib.auth.backends.RemoteUserBackend',
@@ -48,8 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "imagekit_cropper",
-    "users",
-    "applications.events",
+    "applications.users.apps.UsersConfig",
+    "applications.events.apps.EventsConfig",
+    "bootstrap4",
+    "bootstrap_datepicker_plus",
 
 ]
 
@@ -77,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "applications.events.context_processors.debug_mode_flag"
             ],
         },
     },
@@ -140,8 +144,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'events:retrieve_eventboard'
+LOGOUT_REDIRECT_URL = 'events:retrieve_eventboard'
 #WhiteNoise static file caching storage settings. See: http://whitenoise.evans.io/en/stable/django.html#django-middleware
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

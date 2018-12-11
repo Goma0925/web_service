@@ -31,7 +31,6 @@ class EventPopulator():
             start_time, end_time = self.generate_random_time(rand_day)
             event = Event(event_id=self.generate_event_id(), name=self.generate_event_name(), date=rand_day, start_time=start_time, end_time=end_time, language=language, tags=tags, location=location[0], description="Event Description", host_name=username, host=user)
             event.save()
-
             counter +=1
         print(str(counter) + " events and users have been added.")
 

@@ -5,7 +5,9 @@ from . import models
 @admin.register(models.Event)
 class EventModelAdmin(admin.ModelAdmin):
     list_display = ('name', 'date', "location", "host_name", "host")
+    search_fields = ("name", )
 
 @admin.register(models.Location)
-class EventModelAdmin(admin.ModelAdmin):
+class LocationModelAdmin(admin.ModelAdmin):
     list_display = ('location_name',)
+    search_fields = ("location_name",)

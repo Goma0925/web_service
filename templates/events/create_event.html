@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block additional_head %}
+    {% load bootstrap4 %}
+    {% bootstrap_javascript jquery='full' %}
+    {{ event_form.media }}
+    <link rel="stylesheet" href="{% static 'css/create_event.css' %}">
+{% endblock %}
+
+{% block script_source %}
+
+{% endblock %}
+
+{% block content %}
+<div class="col-md-6 offset-md-3">
+    <form method="POST">
+        {% csrf_token %}
+        {% bootstrap_form event_form %}
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Create an event!</button>
+    </form>
+
+</div>
+
+{% endblock %}

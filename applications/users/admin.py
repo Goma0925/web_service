@@ -14,3 +14,5 @@ from django.contrib import admin
 @admin.register(models.User)
 class UserModelAdmin(admin.ModelAdmin):
     list_display = ('email', 'username')
+    list_filter = ["is_staff"]
+    search_fields = ("email", "username")
