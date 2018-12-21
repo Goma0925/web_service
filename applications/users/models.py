@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from datetime import datetime
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import JSONField
+
 
 class UserAccountManager(BaseUserManager):
     use_in_migrations = True
@@ -32,10 +34,14 @@ class UserAccountManager(BaseUserManager):
         return self._create_user(email=email, password=password, is_staff=True,
                                  is_superuser=True)
 
+
 #Define a table here
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(default="", max_length=30)
+    self_introduction = models.CharField(default="", max_length=280)
+    #watch_list = models.CharField(default="", max_length=)
+    joined_hangouts = JSONField(default=list)
 
     is_staff = models.BooleanField(default=False,
                                    help_text='Designates whether the user is a team staff.')

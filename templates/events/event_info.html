@@ -4,12 +4,11 @@
     <link href="{% static 'css/event_info.css' %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <div class="container">
       <div class="row">
         <div class="col-xs-12 col-md-9" >
           <div class="box" >
-            <center><h1>{{event.name}} by Host</h1></center>
-            <center><img style="width: 600px; height: 400px;" alt="Event Image" src="{% static '{{event.picture.url}}' %}"/></center>
+            <center><h1>{{event.name}}</h1></center>
+            <center><img alt="Hangout Image" src={{event.image_storage_url}}/></center>
             <div class="event_info">
               <span>{{event.date}}&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
               <span>{{event.start_time}} ~ {{event.end_time}}</span><br>
@@ -19,6 +18,9 @@
               <center>
                 <button type="button" class="btn btn-warning btn-lg">Add to watch list</button>
                 <button type="button" class="btn btn-danger btn-lg">&nbsp;Join this event!&nbsp;</button>
+                <form id="bookmark-request" method="POST" action="{% url 'events:retrieve_event_info'%}" onsubmit="return false;">
+                {% csrf_token %}
+                </form>
               </center>
               <br>
             </div>
@@ -29,8 +31,28 @@
         </div>
         <div class="col-xs-12 col-md-3">
           <div class="box">
-          content coming soon
+            <center><p>Host detail<br>{{event.host.username}}</p></center>
           </div>
         </div>
       </div>
-      {% endblock %}
+
+<script>
+function post(params) {
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.getElementById("bookmark-request");
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+            form.appendChild(hiddenField);
+        }
+    }
+
+    form.submit();
+}
+
+</script>
+{% endblock %}

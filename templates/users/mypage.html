@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block additional_head %}
+    <link href="{% static 'css/my_page.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-xs-12 col-md-3" >
+      <div id="sidebar">
+        <p>Menu</p>
+        <a href="#homeSubmenu">Hangouts</a>
+        <a href="#homeSubmenu">Watch List</a>
+        <a href="#homeSubmenu">Profile</a>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-9">
+      <div class="dashboard">
+        box2
+      </div>
+    </div>
+</div>
+
+{% endblock %}

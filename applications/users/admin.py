@@ -1,4 +1,4 @@
-from . import models
+from applications.users import models
 #from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 

@@ -1,0 +1,30 @@
+body {
+  padding-top: 54px;
+}
+
+.dashboard{
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 6px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 30px;
+}
+
+#sidebar{
+    margin-bottom: 30px;
+    padding: 30px;
+}
+
+.content-section{
+    margin-left: 60px;
+    margin-right: 60px;
+    margin-bottom: 20px;
+}
+
+#sidebar a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #818100;
+  display: block;
+}

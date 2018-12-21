@@ -7,10 +7,24 @@ import string
 from imagekit_cropper.fields import ImageCropField, InstanceSpecField, InstanceFormatSpecField
 from imagekit_cropper.processors import PositionCrop, PositionAndFormatCrop, FormatProcessor
 
+
+#--------------------------------------------------------------------------------------------------------
+#                                   Support functions for models.
+
+HANGOUT_IMAGE_DIR = 'hangout_image/'
+def get_image_storage_path(instance, filename):
+    print("get_image_storage_path: instance =", type(instance), instance)
+    print("event_id", instance.event_id)
+    return os.path.join(HANGOUT_IMAGE_DIR, str(instance.event_id),)
+
+#--------------------------------------------------------------------------------------------------------
+
+
+
 class Location(models.Model):
-    location_name = models.CharField(max_length=90, blank=False)
+    location_name = models.CharField(default="The place is not specified.", max_length=30, blank=False,)
     #slug = models.SlugField(max_length=255, null=True)
-    #address
+    address = models.CharField(default="The address is not specified.", max_length=120, blank=False,)
 
     def set_location_name(self, location_name):
         self.location_name = location_name
@@ -21,10 +35,11 @@ class Location(models.Model):
 class Event(models.Model):
     event_id = models.CharField(default="XXXXXXXXXX", max_length=10, blank=False, unique=True)
     name = models.CharField(max_length=150, blank=False)
-    date = models.DateField(default=datetime.date.today, blank=False)
+    date = models.DateField(blank=False)
     start_time = models.TimeField(default=None, blank=False)
     end_time = models.TimeField(default=None, blank=False)
-    image = models.ImageField(upload_to = 'event_images/', default="place_holders/place_holder_700x400.png")
+    #image = models.ImageField(upload_to=get_image_storage_path, default="place_holders/place_holder_700x400.png")
+    image_storage_url = models.CharField(default="", max_length=160, blank=False)
     language = models.CharField(default="English", max_length=50, blank=False)
     location = models.ForeignKey(Location, on_delete=models.CASCADE, blank=False)
     description = models.CharField(max_length=160, blank=False)
@@ -48,9 +63,6 @@ class Event(models.Model):
         """Update"""
         self.host = None
 
-    def get_image_path(instance, filename):
-        return os.path.join('photos', str(instance.id), filename)
-
     # def issue_page_id(self):
         #ID collision detection needed
     #     page_id = ""
@@ -60,7 +72,6 @@ class Event(models.Model):
     #         else:
     #             page_id += string.ascii_uppercase
     #     return page_id
-
 
     def __str__(self):
         return str(self.name)

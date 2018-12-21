@@ -1,4 +1,6 @@
 from django.apps import AppConfig
 
-class UsersConfig(AppConfig):
-    name = 'users'
+
+class CustomUsersConfig(AppConfig):
+    name = 'applications.users'
+    label = "users"

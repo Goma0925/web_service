@@ -1,13 +1,14 @@
-from django.shortcuts import render
-from .models import *
-from datetime import datetime
+from django.shortcuts import render, redirect
+from applications.events.models import *
+from datetime import datetime, time
 from django.core.paginator import Paginator
-from . import forms
+from applications.events import forms
 from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
 import random
-from . import views_support_script
 from django.contrib.auth.decorators import login_required
+from . import post_reformatter, views_support_script
 
+import django.apps
 
 def retrieve_eventboard(request):
     current_page_num = request.GET.get('page', 1)
@@ -34,37 +35,58 @@ def retrieve_eventboard(request):
                                                      "page_has_previous": page_has_previous, "page_has_next": page_has_next,
                                                     })
 
+
 def retrieve_event_info(request, event_id="default"):
-    #event_id = request.GET.get('event_id', None)
+    #if request.method == "POST":
+    #    print("POST:", request.POST)
+    #else:
+    print("id:", event_id)
     event = Event.objects.filter(event_id=event_id)
-    return render(request, "events/event_info.html", {"event": event[0], "event_tags": event[0].tags})
+    event_exisists = True
+    if len(event) == 0:
+        event_exisists = False
+        return render(request, "events/event_info.html", {"event": event[0], "event_tags": event[0].tags, "event_exists": event_exisists})
+    return render(request, "events/event_info.html", {"event": event[0], "event_tags": event[0].tags, "event_exists": event_exisists})
+
 
 @login_required
 def create_event(request):
     if request.method == "POST":
-        print("Request:" + str(request.POST))
-        form = forms.EventForm(request.POST)
-        x = input("Before validation.")
-        if form.is_valid():
-            event = form.save(commit=False)
+        #Reformat the start_time/end_time.
+        print("Request:", request.POST)
+        print("Files from form:", request.FILES)
+        updated_request_POST = request.POST.copy()
+        start_time_datetime = datetime.strptime(str(request.POST["start_time"]), "%I:%M %p")
+        end_time_datetime = datetime.strptime(str(request.POST["end_time"]), "%I:%M %p")
+        updated_request_POST["start_time"] = str(start_time_datetime.time())
+        updated_request_POST["end_time"] = str(end_time_datetime.time())
+        event_form = forms.EventForm(updated_request_POST)
+        event_image_form = forms.EventImageForm(updated_request_POST, request.FILES)
+        location_form = forms.LocationForm(updated_request_POST)
+        #print("request.FILES:", request.FILES, request.FILES[0], type(request.FILES[0]))
+        #print("Form:", form.__dict__)
+        if event_form.is_valid() and event_image_form.is_valid() and location_form.is_valid():
+            event = event_form.save(commit=False)
+            location = location_form.save()
+            event.location = location
+            image_storage_url = event_image_form.save_image_of(event)
+            event.image_storage_url = image_storage_url
             user = request.user
             event.host = user
-            event_id = views_support_script.generate_event_id()
-            event_id_issued_successfully = False
-            while not event_id_issued_successfully:
-                try:
-                    event.event_id = event_id
-                    event.save()
-                    event_id_issued_successfully = True #Check if this checks for the duplicates
-                except:
-                    event_id = views_support_script.generate_event_id()
             event.save()
-            return render(request, "events/create_event_confirmation.html")
+            return redirect("events:confirm_new_event", event_id=event.event_id)
         else:
-            print("form invalid.")
-    event_form = forms.EventForm()
-    #event_form.fields['date'].widget = DatePickerInput()
-    #event_form.fields['start_time'].widget = TimePickerInput()
-    #event_form.fields['end_time'].widget = TimePickerInput()
-    return render(request, "events/create_event.html", {"event_form": event_form})
+            print()
+            print(event_form.errors)
+            print(event_image_form.errors)
 
+    event_form = forms.EventForm()
+    event_image_form = forms.EventImageForm()
+    location_form = forms.LocationForm()
+    return render(request, "events/new_event_form.html", {"event_form": event_form, "event_image_form": event_image_form,
+                                                          "location_form": location_form})
+
+
+def confirm_new_event(request, event_id):
+    event = Event.objects.filter(event_id=event_id)
+    return render(request, "events/new_event_confirmation.html", {"event": event[0]})

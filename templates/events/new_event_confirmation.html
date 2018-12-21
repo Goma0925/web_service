@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load staticfiles  %}
+
+{% block additional_head %}
+    <link rel="stylesheet" href="{% static 'css/new_event_confirmation.css' %}">
+{% endblock %}
+
+{% block content %}
+    <img class="card-img-top" src="{{event.image_storage_url}}" alt="">
+{% endblock %}

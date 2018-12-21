@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os, sys
 import django_heroku
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
@@ -34,7 +33,7 @@ ALLOWED_HOSTS = ["meetlocals.herokuapp.com",
                  "127.0.0.1"]
 
 # Application definition
-AUTH_USER_MODEL = "users.User" #NEED to revise
+AUTH_USER_MODEL = "users.User"
 #ADDED WHEN BEGUGGING ADMIN
 AUTHENTICATION_BACKENDS = (
         #'django.contrib.auth.backends.RemoteUserBackend',
@@ -42,6 +41,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 INSTALLED_APPS = [
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,11 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "imagekit_cropper",
-    "applications.users.apps.UsersConfig",
-    "applications.events.apps.EventsConfig",
     "bootstrap4",
     "bootstrap_datepicker_plus",
-
+    "applications.events.apps.EventsConfig",
+    "applications.users.apps.CustomUsersConfig",
 ]
 
 MIDDLEWARE = [

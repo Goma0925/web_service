@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block additional_head %}
+    {% load bootstrap4 %}
+    {% bootstrap_javascript jquery='full' %}
+    {{ event_form.media }}
+    <link rel="stylesheet" href="{% static 'css/new_event_form.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/1.0.0/cropper.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/1.0.0/cropper.min.css" rel="stylesheet" type="text/css" media="all"/>
+{% endblock %}
+
+{% block content %}
+<div class="col-md-6 offset-md-3">
+    {% if event_form.errors %}
+        {% for field in event_form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in event_form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" id="formUpload">
+        {% csrf_token %}
+        <label for="id_name">Hangout name</label>
+        {% bootstrap_field event_form.name show_label=False%}
+        {% bootstrap_field location_form.location_name %}
+        {% bootstrap_field location_form.address %}
+        {% bootstrap_field event_form.date %}
+        {% bootstrap_field event_form.start_time %}
+        {% bootstrap_field event_form.end_time %}
+        {% bootstrap_field event_form.language %}
+        {% bootstrap_field event_form.description %}
+        {% bootstrap_field event_form.tags %}
+        {% bootstrap_form event_image_form %}
+
+<script>
+$(function () {
+
+  /* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
+  $("#id_image").change(function () {
+    if (this.files && this.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $("#image").attr("src", e.target.result);
+        $("#modalCrop").modal("show");
+      }
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+
+  /* SCRIPTS TO HANDLE THE CROPPER BOX */
+  var $image = $("#image");
+  var cropBoxData;
+  var canvasData;
+  $("#modalCrop").on("shown.bs.modal", function () {
+    $image.cropper({
+      viewMode: 1,
+      aspectRatio: 7/4.3,
+      minCropBoxWidth: 70,
+      minCropBoxHeight: 43,
+      ready: function () {
+        $image.cropper("setCanvasData", canvasData);
+        $image.cropper("setCropBoxData", cropBoxData);
+      }
+    });
+  }).on("hidden.bs.modal", function () {
+    cropBoxData = $image.cropper("getCropBoxData");
+    canvasData = $image.cropper("getCanvasData");
+    $image.cropper("destroy");
+  });
+
+  $(".js-zoom-in").click(function () {
+    $image.cropper("zoom", 0.1);
+  });
+
+  $(".js-zoom-out").click(function () {
+    $image.cropper("zoom", -0.1);
+  });
+
+  /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
+  $("#crop_button").click(function () {
+    var cropData = $image.cropper("getData");
+    $("#id_x").val(cropData["x"]);
+    $("#id_y").val(cropData["y"]);
+    $("#id_height").val(cropData["height"]);
+    $("#id_width").val(cropData["width"]);
+    $("#modalCrop").modal("hide");
+    console.log(cropData["x"], cropData["y"], cropData["height"], cropData["width"])
+  });
+
+});
+
+
+  </script>
+
+    <div class="modal fade" id="modalCrop">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Crop the photo</h4>
+      </div>
+      <div class="modal-body">
+        <img src="" id="image" style="max-width: 100%;">
+      </div>
+      <div class="modal-footer">
+        <div class="btn-group pull-left" role="group">
+          <button type="button" class="btn btn-default js-zoom-in">
+            <span class="glyphicon glyphicon-zoom-in"></span>
+          </button>
+          <button type="button" class="btn btn-default js-zoom-out">
+            <span class="glyphicon glyphicon-zoom-out"></span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Nevermind</button>
+        <button type="button" class="btn btn-primary js-crop-and-upload" id="crop_button">Crop image</button>
+      </div>
+    </div>
+  </div></div>
+
+        <div id="cropped_image"></div>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Create an event!</button>
+
+    </form>
+</div>
+
+{% endblock %}

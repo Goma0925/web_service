@@ -2,7 +2,7 @@ from django.test import TestCase
 #from django.conf import settings
 #settings.configure()
 from applications.events.models import Event, Location
-from users.models import User
+from applications.users.models import User
 import datetime
 from faker import Faker
 import random
