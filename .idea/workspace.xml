@@ -1,75 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e9650157-4ab8-49e3-840c-1925aab0e166" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/static/css/login.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/my_page.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/new_event_confirmation.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/new_event_form.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/css/signup.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/events/new_event_confirmation.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/events/new_event_form.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/users/mypage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/events/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/events/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0002_auto_20181008_2040.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0003_event_host_name.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0004_auto_20181009_1732.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0005_auto_20181009_1746.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0006_event_slug.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0007_auto_20181109_0234.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0008_location_slug.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0009_auto_20181109_0239.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0010_auto_20181109_0240.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0011_auto_20181109_0241.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0012_event_page_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0013_auto_20181114_1250.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0014_auto_20181114_1254.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0015_remove_event_page_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0016_event_event_id.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0017_auto_20181122_2101.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0018_event_language.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0019_auto_20181123_2212.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0020_remove_event_slug.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0021_event_tags.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0022_event_picture.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0023_auto_20181125_1722.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0024_auto_20181126_2158.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/migrations/0025_remove_location_slug.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/events/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/events/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/events/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/events/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/events/views_support_script.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/events/views_support_script.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/users/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/users/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/users/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/users/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/users/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/users/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/events/post_reformatter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/users/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/users/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/applications/users/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/event_images/image001.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/media/event_images/image001_J7wpCpP.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_base/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_base/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_base/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_base/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_base/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/project_base/wsgi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sqlite3.db" beforeDir="false" afterPath="$PROJECT_DIR$/sqlite3.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/base.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/create_event.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/css/event_info.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/event_info.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/events/create_event.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/events/create_event_confirmation.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/events/event_info.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/events/event_info.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/events/eventboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/events/eventboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/events/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/events/index_plain.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/user_login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/user_login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/users/user_signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/user_signup.html" afterDir="false" />
-    </list>
+    <list default="true" id="e9650157-4ab8-49e3-840c-1925aab0e166" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,8 +135,8 @@
           <entry key="HTML" value="132" />
           <entry key="Image" value="1" />
           <entry key="JavaScript" value="2" />
-          <entry key="PLAIN_TEXT" value="58" />
-          <entry key="Python" value="286" />
+          <entry key="PLAIN_TEXT" value="60" />
+          <entry key="Python" value="287" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -226,16 +158,16 @@
           <entry key="js" value="3" />
           <entry key="logfile" value="1" />
           <entry key="login" value="1" />
-          <entry key="py" value="286" />
+          <entry key="py" value="287" />
           <entry key="pycharm-bash" value="2" />
           <entry key="sh" value="7" />
-          <entry key="txt" value="18" />
+          <entry key="txt" value="20" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="1059" />
-          <entry key="HTML" value="9771" />
+          <entry key="HTML" value="9779" />
           <entry key="PLAIN_TEXT" value="1547" />
           <entry key="Python" value="21078" />
         </counts>
@@ -250,7 +182,7 @@
           <entry key="css" value="1059" />
           <entry key="deploy" value="79" />
           <entry key="gitignore" value="18" />
-          <entry key="html" value="9771" />
+          <entry key="html" value="9779" />
           <entry key="js" value="1" />
           <entry key="login" value="6" />
           <entry key="py" value="21072" />
@@ -271,13 +203,28 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="28" column="43" lean-forward="true" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
+            <state relative-caret-position="137">
+              <caret line="28" column="51" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/update_requirements.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/requirements1.txt">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -308,37 +255,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="64">
               <caret line="42" column="59" selection-start-line="42" selection-start-column="59" selection-end-line="42" selection-end-column="59" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/events/eventboard.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/applications/events/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/applications/users/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="71" column="47" selection-start-line="71" selection-start-column="47" selection-end-line="71" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-                <marker date="1545360424000" expanded="true" signature="2926:2931" ph="..." />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -649,7 +565,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.settings">
+  <component name="RunManager" selected="Python.update_requirements">
     <configuration name="PlayGround" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Unnamed webservice" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -764,10 +680,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.update_requirements" />
         <item itemvalue="Python.settings" />
         <item itemvalue="Python.PlayGround" />
         <item itemvalue="Python.forms" />
-        <item itemvalue="Python.update_requirements" />
         <item itemvalue="Python.tests" />
       </list>
     </recent_temporary>
@@ -796,19 +712,20 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="55" y="38" width="1225" height="708" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2599668" />
       <window_info id="Structure" order="1" weight="0.24937238" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.18506494" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49916944" weight="0.32954547" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49916944" visible="true" weight="0.32954547" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32954547" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.8563123" visible="true" weight="0.4107143" />
+      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.8563123" weight="0.4107143" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.14368771" side_tool="true" weight="0.4107143" />
       <window_info anchor="bottom" id="Python Console" order="10" weight="0.32954547" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -871,27 +788,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/applications/events/views_support_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="13" selection-end-line="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/applications/events/apps.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/applications/users/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/applications/events/migrations/0006_event_slug.py" />
     <entry file="file://$PROJECT_DIR$/applications/events/migrations/0027_auto_20181213_1229.py" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
@@ -1179,10 +1075,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="28" column="43" lean-forward="true" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
+        <state relative-caret-position="137">
+          <caret line="28" column="51" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/update_requirements.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/requirements1.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>
