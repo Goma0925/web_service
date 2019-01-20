@@ -1,13 +1,13 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from applications.users.models import User
+from applications.users.models import User, UserProfile
 import datetime
 
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'email', )
+        fields = ('email',)
 
 
     def clean_email(self):
@@ -37,4 +37,10 @@ class CustomUserChangeForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email')
+        fields = ('email',)
+
+class ProfileForm(forms.ModelForm):
+    class Meta():
+        model = UserProfile
+        fields = ("first_name", "last_name", "middle_name", 'birthday', 'where_you_live', 'introduction',
+                  "profile_image_storage_url")

@@ -6,20 +6,19 @@
 {% endblock %}
 
 {% block content %}
-
-
 <div class="row">
-    <div class="col-xs-12 col-md-3" >
+    <div class="col-xs-12 col-md-2" >
       <div id="sidebar">
-        <p>Menu</p>
-        <a href="#homeSubmenu">Hangouts</a>
-        <a href="#homeSubmenu">Watch List</a>
-        <a href="#homeSubmenu">Profile</a>
+        <p>My page</p>
+        <a href="{% url 'users:retrieve_my_hangouts'%}">Hangouts</a>
+        <a href="{% url 'users:retrieve_my_watchlist'%}">Watch List</a>
+        <a href="{% url 'users:edit_profile'%}">Profile</a>
       </div>
     </div>
-    <div class="col-xs-12 col-md-9">
+    <div class="col-xs-12 col-md-10">
       <div class="dashboard">
-        box2
+          {% block dashboard %}
+          {% endblock %}
       </div>
     </div>
 </div>

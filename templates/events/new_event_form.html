@@ -33,7 +33,6 @@
         {% bootstrap_field event_form.name show_label=False%}
         {% bootstrap_field location_form.location_name %}
         {% bootstrap_field location_form.address %}
-        {% bootstrap_field event_form.date %}
         {% bootstrap_field event_form.start_time %}
         {% bootstrap_field event_form.end_time %}
         {% bootstrap_field event_form.language %}
@@ -43,7 +42,6 @@
 
 <script>
 $(function () {
-
   /* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
   $("#id_image").change(function () {
     if (this.files && this.files[0]) {

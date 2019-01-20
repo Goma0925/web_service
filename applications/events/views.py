@@ -1,22 +1,30 @@
+#Django libs
 from django.shortcuts import render, redirect
-from applications.events.models import *
-from datetime import datetime, time
 from django.core.paginator import Paginator
-from applications.events import forms
-from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
-import random
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+#Django modules
+from applications.events.models import *
+from applications.events import forms
+#Python modules
+from datetime import datetime
+import random
+#Additional Django libs
+from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
 from . import post_reformatter, views_support_script
-
 import django.apps
 
 def retrieve_eventboard(request):
     current_page_num = request.GET.get('page', 1)
     # Sort by nearest upcoming events
-    future_events = Event.objects.filter(date__gte=datetime.now())
+    today = timezone.now()
+    future_events = Event.objects.filter(start_date__gte=today)
     for event in future_events:
+        print("STM:", event.start_time)
+        #pass
         #Reformat the date string
-        event.date = str(event.date.month) + "/" + str(event.date.day) + "/" + str(event.date.year)
+        #event.start_time = str(event.date.month) + "/" + str(event.date.day) + "/" + str(event.date.year)
+        #event.end_time = str(event.date.month) + "/" + str(event.date.day) + "/" + str(event.date.year)
 
     paginator = Paginator(future_events, 24)
     try:
@@ -37,17 +45,53 @@ def retrieve_eventboard(request):
 
 
 def retrieve_event_info(request, event_id="default"):
-    #if request.method == "POST":
-    #    print("POST:", request.POST)
-    #else:
-    print("id:", event_id)
-    event = Event.objects.filter(event_id=event_id)
-    event_exisists = True
-    if len(event) == 0:
+    print("request", request)
+    if request.method == "POST":
+        print("POST CONTENT:", request.POST)
+        if request.user.is_authenticated:
+            print("USER LOGGED IN")
+            if request.POST.get("bookmark_request") == "add-to-watch":
+                user = request.user
+                if not user.has_it_in_watch_list(event_id): #Join list.
+                    print("Event not in watch list")
+                    user.add_to_watch_list(event_id)
+                else:
+                    print("Event not in watch list")
+                    user.remove_from_watch_list(event_id)
+            elif request.POST.get("bookmark_request") == "join-event":
+                user = request.user
+                if not user.has_it_in_join_list(event_id): #Watch list.
+                    user.add_to_join_list(event_id)
+                    print("Event not in join list")
+                else: #Watch list.
+                    user.remove_from_join_list(event_id)
+                    print("Event not in join list")
+        else:
+            return render(request, "users/user_login.html")
+    event_query = Event.objects.filter(event_id=event_id)
+    if len(event_query) == 0:
         event_exisists = False
-        return render(request, "events/event_info.html", {"event": event[0], "event_tags": event[0].tags, "event_exists": event_exisists})
-    return render(request, "events/event_info.html", {"event": event[0], "event_tags": event[0].tags, "event_exists": event_exisists})
+        event = None
+    else:
+        event = event_query[0] #Extract event obj from queryset
+        event_exisists = True
 
+    bookmark_request_form = forms.BookmarkRequestForm()
+
+    if request.user.is_authenticated:
+        added_to_watch_list = request.user.has_it_in_watch_list(event_id)
+        added_to_join_list = request.user.has_it_in_join_list(event_id)
+    else:
+        added_to_watch_list = False
+        added_to_join_list = False
+
+    context_dict = {"event": event, "event_tags": event.tags.all(),
+                      "event_exists": event_exisists,
+                      "bookmark_request_form": bookmark_request_form,
+                      "added_to_watch_list": added_to_watch_list,
+                      "added_to_join_list": added_to_join_list
+                      }
+    return render(request, "events/event_info.html", context_dict)
 
 @login_required
 def create_event(request):
@@ -63,8 +107,6 @@ def create_event(request):
         event_form = forms.EventForm(updated_request_POST)
         event_image_form = forms.EventImageForm(updated_request_POST, request.FILES)
         location_form = forms.LocationForm(updated_request_POST)
-        #print("request.FILES:", request.FILES, request.FILES[0], type(request.FILES[0]))
-        #print("Form:", form.__dict__)
         if event_form.is_valid() and event_image_form.is_valid() and location_form.is_valid():
             event = event_form.save(commit=False)
             location = location_form.save()
@@ -74,9 +116,10 @@ def create_event(request):
             user = request.user
             event.host = user
             event.save()
+            event_form.save_m2m() #To save tags field.
             return redirect("events:confirm_new_event", event_id=event.event_id)
         else:
-            print()
+            print("FORM ERRORS:")
             print(event_form.errors)
             print(event_image_form.errors)
 

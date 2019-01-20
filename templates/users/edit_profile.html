@@ -1,0 +1,31 @@
+{% extends "users/mypage.html" %}
+{% load staticfiles %}
+{% load widget_tweaks %}
+
+{% block dashboard %}
+    <p>Edit your profile</p>
+<form>
+    {{profile_form.first_name.label}}
+    <div class="form-group">
+        {% render_field profile_form.first_name class+="form-control" place_holder="test" %}
+    </div>
+    {{profile_form.last_name.label}}
+    <div class="form-group">
+        {% render_field profile_form.last_name class+="form-control" placeholder=user.last_name %}
+    </div>
+    {{profile_form.middle_name.label}}
+    <div class="form-group">
+        {% render_field profile_form.middle_name class+="form-control" placeholder=user.middle_name %}
+    </div>
+    {{profile_form.birthday.label}}
+    <div class="form-group">
+        {% render_field profile_form.birthday class+="form-control" placeholder=user.birthday %}
+    </div>
+    <label for="id_where_you_live">Area you live in</label>
+    <div class="form-group">
+        {% render_field profile_form.where_you_live class+="form-control" placeholder=user.where_you_live %}
+        *This information will be public.
+    </div>
+    <button type="submit" class="btn btn-warning">Save</button>
+</form>
+{% endblock %}

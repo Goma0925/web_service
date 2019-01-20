@@ -7,6 +7,9 @@ from applications.users import forms
 from applications.users.models import User
 from django.utils import timezone
 import pytz #time zone lib. Might not be needed?
+from applications.events.models import Event
+from django.contrib.auth.decorators import login_required
+
 
 def signup(request):
     registered = False
@@ -64,9 +67,30 @@ def login(request, **kwargs):
             return render(request, "users/user_login.html")
 
 
-def logout(request):
-    auth.logout(request)
+@login_required
+def retrieve_my_hangouts(request):
+    join_list = request.user.hangouts_to_join
+    events = list()
+    for event_id in join_list:
+        events += Event.objects.filter(event_id=event_id)
+    context = {"events": events}
+    return render(request, "users/my_hangouts.html", context=context)
 
 
-def mypage(request):
-    return render(request, "users/mypage.html")
+@login_required
+def retrieve_my_watchlist(request):
+    watch_list = request.user.watch_list
+    events = list()
+    for event_id in watch_list:
+        events += Event.objects.filter(event_id=event_id)
+    context = {"events": events}
+    return render(request, "users/my_watchlist.html", context=context)
+
+
+@login_required
+def edit_profile(request):
+    profile_form = forms.ProfileForm()
+    user = request.user
+    print("Profile:", profile_form)
+    context = {"profile_form": profile_form, "user":user}
+    return render(request, "users/edit_profile.html", context=context)

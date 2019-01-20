@@ -2,22 +2,17 @@ from django import forms
 from applications.events.models import Event, Location
 from applications.users.models import User
 from django.conf import settings
-from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
+from bootstrap_datepicker_plus import DateTimePickerInput
 import random
 import string
 from PIL import Image
 import os
 from applications.events.models import HANGOUT_IMAGE_DIR
 
+
 class EventForm(forms.ModelForm):
-    # image_x = forms.FloatField()
-    # image_y = forms.FloatField()
-    # image_width = forms.FloatField()
-    # image_height = forms.FloatField()
-    # image = forms.ImageField()
     def __init__(self, *args, **kwargs):
         self.issued_event_id = "XXXXXXXXXX"
-        #self.has_resized_image = False
         super(EventForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
@@ -55,20 +50,16 @@ class EventForm(forms.ModelForm):
                 event_id += random.choice(string.ascii_uppercase)
         return event_id
 
-
-
     class Meta(): #Configures the model to work with
         model = Event
-        fields = ("name", "date", "start_time", "end_time", "language", "description", "tags",)
-        widgets = {'date': DatePickerInput(options={
-                       # "min": today
-                    }),
+        fields = ("name",  "start_date", "end_date","start_time", "end_time", "language", "description", "tags",)
+        widgets = {
                    "description": forms.Textarea(),
-                   'start_time': TimePickerInput(options={
+                   'start_time': DateTimePickerInput(options={
                        "format": 'hh:mm a',
                        "stepping": 15,
                    }).start_of('Event time'),
-                   'end_time': TimePickerInput(options={
+                   'end_time': DateTimePickerInput(options={
                        "format": 'hh:mm a',
                        "stepping": 15
                    }).end_of('Event time'),
@@ -102,8 +93,14 @@ class EventImageForm(forms.Form):
         resized_image = cropped_image.resize((700, 400), Image.ANTIALIAS)
         image_storage_path = os.path.join(settings.MEDIA_ROOT, HANGOUT_IMAGE_DIR, event.event_id)
         image_storage_url = settings.MEDIA_URL + HANGOUT_IMAGE_DIR + event.event_id + "/"
-        resized_image.save(image_storage_path, format="JPEG")  # Image.save() saves the image in a file at the given path(event.image.path)
+        try:
+            resized_image.save(image_storage_path, format="JPEG")  # Image.save() saves the image in a file at the given path(event.image.path)
+        except Exception:
+            raise forms.ValidationError("This type of image file cannot be used.")
         return str(image_storage_url)
 
 
-
+class BookmarkRequestForm(forms.Form):
+    bookmark_request = forms.CharField(widget=forms.HiddenInput)
+    def request_type(self):
+        return self.cleaned_data.get('bookmark_request')

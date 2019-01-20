@@ -14,7 +14,7 @@
       <!-- event info -->
       <div class="row">
         {% for event in events %}
-        <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+        <div class="col-lg-3 col-md-4 col-sm-6 board-item">
           <div class="card h-100">
             <a href="{% url 'events:retrieve_event_info' event_id=event.event_id%}"><img class="card-img-top" src="{{event.image_storage_url}}" alt=""></a>
             <div class="card-body">

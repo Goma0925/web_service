@@ -34,10 +34,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'users:mypage'%}">MyPage</a>
+              <a class="nav-link" href="{% url 'users:retrieve_my_hangouts'%}">My Page</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{% url 'events:create_event'%}">Create Event</a>
+            <a class="nav-link" href="{% url 'events:create_event'%}">Create Hangout</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">About</a>
@@ -75,7 +75,6 @@
 
     {% block script_source %}
     <!-- Bootstrap core JavaScript -->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     {% endblock %}
   </body>

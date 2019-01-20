@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block additional_head %}
     <link href="{% static 'css/event_info.css' %}" rel="stylesheet">
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 {% endblock %}
 {% block content %}
       <div class="row">
@@ -9,24 +10,34 @@
           <div class="box" >
             <center><h1>{{event.name}}</h1></center>
             <center><img alt="Hangout Image" src={{event.image_storage_url}}/></center>
-            <div class="event_info">
-              <span>{{event.date}}&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
-              <span>{{event.start_time}} ~ {{event.end_time}}</span><br>
-              <span>Language used:&nbsp;{{event.language}}</span><br>
-              <span>{{event.tags}}</span><br>
+            <div class="event_info"><br>
+              <span>Date:&nbsp&nbsp&nbsp{{event.date}}&nbsp;&nbsp;&nbsp;&nbsp;</span><br>
+              <span>Time:&nbsp&nbsp&nbsp{{event.start_time}} ~ {{event.end_time}}</span><br>
+              <span>Language:&nbsp;{{event.language}}</span><br>
+              <span>Tags: {{event.tags.all|join:", "}}</span><br>
               <hr>
-              <center>
-                <button type="button" class="btn btn-warning btn-lg">Add to watch list</button>
-                <button type="button" class="btn btn-danger btn-lg">&nbsp;Join this event!&nbsp;</button>
-                <form id="bookmark-request" method="POST" action="{% url 'events:retrieve_event_info'%}" onsubmit="return false;">
-                {% csrf_token %}
-                </form>
-              </center>
               <br>
             </div>
-            <center><font size="5">What you will experience</font></center>
+            <center><font size="5">About this hangouts</font></center>
             <br>
             <p>{{event.description}}</p>
+            <br>
+                          <center>
+                {% if added_to_watch_list %}
+                  <button type="button" class="btn btn-warning btn-lg" id="watch-button">Remove from watch list</button>
+                {% else %}
+                  <button type="button" class="btn btn-warning btn-lg" id="watch-button">Add to watch list</button>
+                {% endif %}
+                {% if added_to_join_list %}
+                  <button type="button" class="btn btn-warning btn-lg" id="join-button">&nbsp;Cancel this event&nbsp;</button>
+                {% else %}
+                   <button type="button" class="btn btn-warning btn-lg" id="join-button">&nbsp;Join this event!&nbsp;</button>
+                {% endif %}
+                <form id="bookmark-request-form" method="POST">
+                  {% csrf_token %}
+                  {{bookmark_request_form}}
+                </form>
+              </center>
           </div>
         </div>
         <div class="col-xs-12 col-md-3">
@@ -37,22 +48,31 @@
       </div>
 
 <script>
-function post(params) {
-    // The rest of this code assumes you are not using a library.
-    // It can be made less wordy if you use one.
-    var form = document.getElementById("bookmark-request");
-    for(var key in params) {
-        if(params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
-            form.appendChild(hiddenField);
-        }
-    }
+$(document).ready
+(function($)
+  {
+      var $watchButton = $('#watch-button');
+      var $joinButton = $('#join-button');
+      var $bookmarkForm = $('#bookmark-request-form');
+      var $bookmarkRequest = $("#id_bookmark_request")
+      $watchButton.click
+      (function()
+          {
+            $bookmarkRequest.val("add-to-watch");
+            console.log("WatchButton");
+            $bookmarkForm.submit();
+          }
+      );
 
-    form.submit();
-}
-
+      $joinButton.click
+      (function()
+          {
+            $bookmarkRequest.val("join-event");
+            $bookmarkForm.submit();
+            console.log("JoinButton");
+          }
+      );
+  }
+);
 </script>
 {% endblock %}

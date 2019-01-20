@@ -32,28 +32,38 @@ SECRET_KEY = 'mf#0959#k*ximj%r+8#-y8g&l)5-c^56ji=+w9p#!7%3pgm_q-'
 ALLOWED_HOSTS = ["meetlocals.herokuapp.com",
                  "127.0.0.1"]
 
-# Application definition
 AUTH_USER_MODEL = "users.User"
+AUTH_PROFILE_MODULE = 'users.UserProfile'
 #ADDED WHEN BEGUGGING ADMIN
 AUTHENTICATION_BACKENDS = (
         #'django.contrib.auth.backends.RemoteUserBackend',
         'django.contrib.auth.backends.ModelBackend',
 )
 
-INSTALLED_APPS = [
-
+DJANGO_NATIVE_INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+INSTALLED_MODULES = [
     "imagekit_cropper",
     "bootstrap4",
     "bootstrap_datepicker_plus",
+    "taggit",
+    'widget_tweaks',
+]
+TAGGIT_CASE_INSENSITIVE = True #Tags ignore capitalization.
+
+PROJECT_APPS = [
     "applications.events.apps.EventsConfig",
     "applications.users.apps.CustomUsersConfig",
 ]
+
+INSTALLED_APPS = DJANGO_NATIVE_INSTALLED_APPS + INSTALLED_MODULES + PROJECT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
