@@ -11,3 +11,8 @@
 .pagination {
   margin-bottom: 30px;
 }
+
+.card-title{
+    font-size:1rem;
+    color: green;
+    }

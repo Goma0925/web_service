@@ -12,10 +12,10 @@
         <p>My page</p>
         <a href="{% url 'users:retrieve_my_hangouts'%}">Hangouts</a>
         <a href="{% url 'users:retrieve_my_watchlist'%}">Watch List</a>
-        <a href="{% url 'users:edit_profile'%}">Profile</a>
+        <a href="{% url 'users:retrieve_profile'%}">Profile</a>
       </div>
     </div>
-    <div class="col-xs-12 col-md-10">
+    <div class="col-xs-12 col-md-9">
       <div class="dashboard">
           {% block dashboard %}
           {% endblock %}

@@ -1,0 +1,34 @@
+{% extends "users/mypage.html" %}
+{% load staticfiles %}
+
+{% block dashboard %}
+<h3>Your profile</h3>
+    <div class="form-group">
+        <label>First name:&nbsp&nbsp*This information will be public.</label>
+        <p>{{profile.first_name}}</p>
+    </div>
+    <div class="form-group">
+        <label>Last name:&nbsp&nbsp*This information will be public.</label>
+        <p>{{profile.last_name}}</p>
+    </div>
+    <div class="form-group">
+        <label>Middle name:&nbsp&nbsp*This information will be public.</label>
+        <p>{{profile.middle_name}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>Birthday:&nbsp&nbsp*This information will only be used for our data analysis purpose.</label>
+        <p>{{profile.birthday}}</p>
+    </div>
+    <div class="form-group">
+        <label for="id_where_you_live">Where you are from:&nbsp&nbsp*This information will be public.</label>
+        <p>{{profile.where_you_live}}</p>
+    </div>
+    <div>
+        <label for="id_introduction">Introduce yourself:&nbsp&nbsp*This information will be public.</label>
+        <p>{{profile.introduction}}</p>
+    </div><br>
+    <form action="{% url 'users:edit_profile'%}">
+        <button type="submit" class="btn btn-warning">Edit</button>
+    </form>
+{% endblock %}

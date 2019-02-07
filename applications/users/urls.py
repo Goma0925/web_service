@@ -12,5 +12,7 @@ urlpatterns = [
     #path("mypage/", views.get_mypage, name="mypage"),
     path("mypage/myhangouts/", views.retrieve_my_hangouts, name="retrieve_my_hangouts"),
     path("mypage/mywatchlist/", views.retrieve_my_watchlist, name="retrieve_my_watchlist"),
-    path("mypage/profile/", views.edit_profile, name="edit_profile")
+    path("mypage/editprofile/", views.edit_profile, name="edit_profile"),
+    path("mypage/profile/", views.retrieve_profile, name="retrieve_profile")
+
 ]

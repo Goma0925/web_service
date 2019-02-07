@@ -19,3 +19,7 @@ class UserModelAdmin(admin.ModelAdmin):
     list_filter = ["is_staff"]
     search_fields = ("email", "first_name", "last_name")
     inlines = [UserProfileInline]
+
+@admin.register(models.UserProfile)
+class UserProfileModelAdmin(admin.ModelAdmin):
+    list_display = ('user',)

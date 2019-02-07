@@ -19,10 +19,9 @@
             <a href="{% url 'events:retrieve_event_info' event_id=event.event_id%}"><img class="card-img-top" src="{{event.image_storage_url}}" alt=""></a>
             <div class="card-body">
               <h4 class="card-title">
-                <a href="{% url 'events:retrieve_event_info' event_id=event.event_id%}">{{event.name}}</a>
+                <p class="card-title"><a href="{% url 'events:retrieve_event_info' event_id=event.event_id%}">{{event.name}}</a></p>
               </h4>
-              <p class="card-text">{{event.description}}</p>
-              <p>{{event.date}}<br>{{event.start_time}} - {{event.end_time}}</p>
+              <p>{{event.start_date}}<br>{{event.start_time}} - {{event.end_time}}</p>
             </div>
           </div>
         </div>

@@ -10,7 +10,6 @@ from applications.events import forms
 from datetime import datetime
 import random
 #Additional Django libs
-from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
 from . import post_reformatter, views_support_script
 import django.apps
 
@@ -20,11 +19,18 @@ def retrieve_eventboard(request):
     today = timezone.now()
     future_events = Event.objects.filter(start_date__gte=today)
     for event in future_events:
-        print("STM:", event.start_time)
+
         #pass
         #Reformat the date string
-        #event.start_time = str(event.date.month) + "/" + str(event.date.day) + "/" + str(event.date.year)
-        #event.end_time = str(event.date.month) + "/" + str(event.date.day) + "/" + str(event.date.year)
+        event.start_date = str(event.start_date.month) + "/" + str(event.start_date.day)
+        event.end_date = str(event.end_date.month) + "/" + str(event.end_date.day)
+        event.start_time = str(event.end_time)
+        event.end_time = str(event.end_time)
+        print(event.start_date)
+        print(event.end_date)
+        print(event.start_time)
+        print(event.end_time)
+
 
     paginator = Paginator(future_events, 24)
     try:
@@ -45,27 +51,20 @@ def retrieve_eventboard(request):
 
 
 def retrieve_event_info(request, event_id="default"):
-    print("request", request)
     if request.method == "POST":
-        print("POST CONTENT:", request.POST)
         if request.user.is_authenticated:
-            print("USER LOGGED IN")
             if request.POST.get("bookmark_request") == "add-to-watch":
                 user = request.user
-                if not user.has_it_in_watch_list(event_id): #Join list.
-                    print("Event not in watch list")
+                if not user.has_it_in_watch_list(event_id):
                     user.add_to_watch_list(event_id)
                 else:
-                    print("Event not in watch list")
                     user.remove_from_watch_list(event_id)
             elif request.POST.get("bookmark_request") == "join-event":
                 user = request.user
-                if not user.has_it_in_join_list(event_id): #Watch list.
+                if not user.has_it_in_join_list(event_id):
                     user.add_to_join_list(event_id)
-                    print("Event not in join list")
-                else: #Watch list.
+                else:
                     user.remove_from_join_list(event_id)
-                    print("Event not in join list")
         else:
             return render(request, "users/user_login.html")
     event_query = Event.objects.filter(event_id=event_id)
@@ -77,7 +76,6 @@ def retrieve_event_info(request, event_id="default"):
         event_exisists = True
 
     bookmark_request_form = forms.BookmarkRequestForm()
-
     if request.user.is_authenticated:
         added_to_watch_list = request.user.has_it_in_watch_list(event_id)
         added_to_join_list = request.user.has_it_in_join_list(event_id)
@@ -97,12 +95,19 @@ def retrieve_event_info(request, event_id="default"):
 def create_event(request):
     if request.method == "POST":
         #Reformat the start_time/end_time.
-        print("Request:", request.POST)
-        print("Files from form:", request.FILES)
+        #print("Request:", request.POST)
+        #print("Files from form:", request.FILES)
+        print("Request:")
+        print(request.POST)
+        print(request.FILES)
         updated_request_POST = request.POST.copy()
+        start_date_datetime = datetime.strptime(str(request.POST["start_date"]), "%m-%d-%Y")
         start_time_datetime = datetime.strptime(str(request.POST["start_time"]), "%I:%M %p")
+        end_date_datetime = datetime.strptime(str(request.POST["end_date"]), "%m-%d-%Y")
         end_time_datetime = datetime.strptime(str(request.POST["end_time"]), "%I:%M %p")
+        updated_request_POST["start_date"] = str(start_date_datetime.date())
         updated_request_POST["start_time"] = str(start_time_datetime.time())
+        updated_request_POST["end_date"] = str(end_date_datetime.date())
         updated_request_POST["end_time"] = str(end_time_datetime.time())
         event_form = forms.EventForm(updated_request_POST)
         event_image_form = forms.EventImageForm(updated_request_POST, request.FILES)
@@ -120,14 +125,21 @@ def create_event(request):
             return redirect("events:confirm_new_event", event_id=event.event_id)
         else:
             print("FORM ERRORS:")
+            print("EVENT_FORM:")
             print(event_form.errors)
+            print("IMAGE_FORM")
             print(event_image_form.errors)
+            print("Location_form:")
+            print(location_form)
+            return render(request, "events/new_event_form.html",
+                          {"event_form": event_form, "event_image_form": event_image_form,
+                           "location_form": location_form, })
 
     event_form = forms.EventForm()
     event_image_form = forms.EventImageForm()
     location_form = forms.LocationForm()
     return render(request, "events/new_event_form.html", {"event_form": event_form, "event_image_form": event_image_form,
-                                                          "location_form": location_form})
+                                                          "location_form": location_form,})
 
 
 def confirm_new_event(request, event_id):

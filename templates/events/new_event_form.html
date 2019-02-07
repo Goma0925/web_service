@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load widget_tweaks %}
 
 {% block additional_head %}
-    {% load bootstrap4 %}
-    {% bootstrap_javascript jquery='full' %}
-    {{ event_form.media }}
     <link rel="stylesheet" href="{% static 'css/new_event_form.css' %}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/1.0.0/cropper.min.js"></script>
+    <link href="{% static 'vendor/bootstrap/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+    <script src="{% static 'vendor/bootstrap/js/bootstrap-datepicker.min.js' %}"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropper/1.0.0/cropper.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropper/1.0.0/cropper.min.js"></script>
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+
 {% endblock %}
 
 {% block content %}
@@ -26,19 +31,193 @@
             </div>
         {% endfor %}
     {% endif %}
+    <p>--------</p>
+    {% if event_form.errors %}
+    {% for field in event_form %}
+        {% for error in field.errors %}
+            <p> {{ error }} </p>
+        {% endfor %}
+    {% endfor %}
+{% endif %}
 
     <form method="POST" enctype="multipart/form-data" id="formUpload">
         {% csrf_token %}
+
+
+
         <label for="id_name">Hangout name</label>
-        {% bootstrap_field event_form.name show_label=False%}
-        {% bootstrap_field location_form.location_name %}
-        {% bootstrap_field location_form.address %}
-        {% bootstrap_field event_form.start_time %}
-        {% bootstrap_field event_form.end_time %}
-        {% bootstrap_field event_form.language %}
-        {% bootstrap_field event_form.description %}
-        {% bootstrap_field event_form.tags %}
-        {% bootstrap_form event_image_form %}
+        <div class="form-group">
+            {% render_field event_form.name class+="form-control" placeholder="Name of the event"%}
+        </div>
+        {{location_form.location_name.label}}
+        <div class="form-group">
+            {% render_field location_form.location_name class+="form-control" placeholder="Area or name of a place" %}
+        </div>
+        {{location_form.address.label}}
+        <div class="form-group">
+            {% render_field location_form.address class+="form-control" placeholder="Exact address of the location"%}
+        </div>
+        <label for="id_start_date id_start_time">Start at</label>
+        <div class="form-group">
+            <div class="input-group-mb3 input-group-append" id="start-datetimepicker" data-target-input="nearest">
+            {% render_field event_form.start_date class+="form-control datetimepicker-input" id="start-date" placeholder="Click the calendar"%}
+                <div class="input-group-append" id="start-datepicker" data-target="#start-date" data-toggle="datetimepicker">
+                    <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                    </span>
+                </div>
+            {% render_field event_form.start_time class+="form-control" id="start-time" placeholder="Click the clock"%}
+                <div class="input-group-append" id="start-timepicker" data-target="#start-time" data-toggle="datetimepicker">
+                    <span class="input-group-text">
+                        <i class="fas fa-clock"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <label for="id_end_date id_end_time">End at</label>
+        <div class="form-group">
+            <div class="input-group-mb3 input-group-append" id="end-datetimepicker">
+            {% render_field event_form.end_date class+="form-control" id="end-date" placeholder="Click the calendar" %}
+                <div class="input-group-append" id="end-datepicker" data-target="#end-date" data-toggle="datetimepicker">
+                    <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                    </span>
+                </div>
+            {% render_field event_form.end_time class+="form-control" id="end-time" placeholder="Click the clock"%}
+                <div class="input-group-append" id="end-timepicker" data-target="#end-time" data-toggle="datetimepicker">
+                    <span class="input-group-text">
+                        <i class="fas fa-clock"></i>
+                    </span>
+                </div>
+            </div>
+
+        </div>
+        {{event_form.language.label}}
+        <div class="form-group">
+            {% render_field event_form.language class+="form-control" placeholder="Languages used for the hangout."%}
+        </div>
+        {{event_form.description.label}}
+        <div class="form-group">
+            {% render_field event_form.description class+="form-control" placeholder="What is this hangout about?"%}
+        </div>
+
+        {{event_form.tags.label}}
+        <div class="form-group">
+            {% render_field event_form.tags class+="form-control" placeholder="Separate with commas. e.g) BBQ, outdoor"%}
+        </div>
+        <div class="form-group">
+            <div class="custom-file">
+            {% render_field event_image_form.image class="custom-file-input"%}
+            {% render_field event_image_form.x %}
+            {% render_field event_image_form.y %}
+            {% render_field event_image_form.width %}
+            {% render_field event_image_form.height %}
+            <label for="id_image" class="custom-file-label">Image</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-warning btn-lg btn-block">Create a hangout!</button>
+        </div>
+
+<script>
+/* SCRIPT FOR DATEPICKER */
+var today = new Date();
+console.log("Now:", today)
+var sameDay = true;/* Specify if the startDay and endDay are the same */
+var isSameDay = function() {
+    startDayStr = document.getElementById('start-date').value;
+    endDayStr = document.getElementById('end-date').value;
+    console.log(startDayStr, "==", endDayStr)
+    if (startDayStr == endDayStr){ console.log("SameDay=True"); return true;} else {console.log("SameDay=True");return false;}
+}
+
+$('#start-date').datetimepicker({
+                            format: "MM-DD-YYYY",
+                            minDate: today,
+                            });
+
+$('#start-time').datetimepicker({
+                            format: "LT",
+                            stepping: 15,
+                            });
+
+$('#end-date').datetimepicker({
+                                format: "MM-DD-YYYY",
+                                minDate: today,
+                                });
+
+/* CHANGE THE minDate FOR END DATE PICKER */
+$('#start-date').on("change.datetimepicker", function(){
+    startDayStr = document.getElementById('start-date').value;
+    console.log("startDay", startDayStr)
+    var endDayInput = document.getElementById('end-date')
+    $("#end-date").datetimepicker("minDate", startDayStr);
+    if (endDayInput.value == "")
+    {
+        endDayInput.value = startDayStr;
+    }
+    if (!isSameDay())
+    {
+        $('#end-time').datetimepicker("minDate", false);
+    }
+    console.log("RE-Initialized datepicker");
+
+});
+
+$('#end-date').on("change.datetimepicker", function(){
+    startDayStr = document.getElementById('start-date').value;
+    if (startDayStr == "")
+    {
+        document.getElementById('start-date').value = document.getElementById('end-date').value;
+    }
+    if (!isSameDay())
+    {
+        $('#end-time').datetimepicker("minDate", false);
+    }
+});
+
+$('#end-time').datetimepicker({
+                            format: "LT",
+                            stepping: 15,});
+
+$('#start-time').on("change.datetimepicker", function(){
+    if (isSameDay()){
+        console.log("changed time")
+        startTimeStr = document.getElementById('start-time').value;
+        endTimeStr = document.getElementById('end-time').value;
+        console.log("StartTimeStr:", startTimeStr);
+        var startTimeDict = startTimeStr.split(":");
+        startTimeDict[2] = startTimeDict[1].split(" ")[1]; /* AM or PM */
+        startTimeDict[1] = startTimeDict[1].split(" ")[0];
+        var startTime = new Date();
+        if (startTimeDict[2] == "PM"){
+            var convertedHour = parseInt(startTimeDict[0], 10) + 12;
+            startTime.setHours(convertedHour.toString());
+            }
+        else{
+            startTime.setHours(startTimeDict[0]);
+        }
+        startTime.setMinutes(startTimeDict[1]);
+        console.log("StartTimeObj:", startTime);
+        $('#end-time').datetimepicker("minDate", startTime);
+        document.getElementById('end-time').value = startTimeStr;
+        }
+
+});
+
+$('#end-time').on("change.datetimepicker", function(){
+    startTimeStr = document.getElementById('start-time').value;
+    if (startTimeStr == "")
+    {
+        document.getElementById('start-time').value = document.getElementById('end-time').value;
+    }
+    });
+
+
+
+
+</script>
+
 
 <script>
 $(function () {
@@ -49,6 +228,7 @@ $(function () {
       reader.onload = function (e) {
         $("#image").attr("src", e.target.result);
         $("#modalCrop").modal("show");
+
       }
       reader.readAsDataURL(this.files[0]);
     }
@@ -90,6 +270,7 @@ $(function () {
     $("#id_y").val(cropData["y"]);
     $("#id_height").val(cropData["height"]);
     $("#id_width").val(cropData["width"]);
+    console.log($("#id_x").val(), $("#id_y").val(), $("#id_height").val(), $("#id_width").val());
     $("#modalCrop").modal("hide");
     console.log(cropData["x"], cropData["y"], cropData["height"], cropData["width"])
   });
@@ -99,14 +280,14 @@ $(function () {
 
   </script>
 
-    <div class="modal fade" id="modalCrop">
+<div class="modal fade" id="modalCrop">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
+        <h4 class="modal-title">Crop the photo for the hangout image</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <i class="far fa-window-close"></i>
         </button>
-        <h4 class="modal-title">Crop the photo</h4>
       </div>
       <div class="modal-body">
         <img src="" id="image" style="max-width: 100%;">
@@ -114,21 +295,20 @@ $(function () {
       <div class="modal-footer">
         <div class="btn-group pull-left" role="group">
           <button type="button" class="btn btn-default js-zoom-in">
-            <span class="glyphicon glyphicon-zoom-in"></span>
+            <i class="fas fa-search-plus"></i>
           </button>
           <button type="button" class="btn btn-default js-zoom-out">
-            <span class="glyphicon glyphicon-zoom-out"></span>
+            <i class="fas fa-search-minus"></i>
           </button>
         </div>
         <button type="button" class="btn btn-default" data-dismiss="modal">Nevermind</button>
         <button type="button" class="btn btn-primary js-crop-and-upload" id="crop_button">Crop image</button>
       </div>
     </div>
-  </div></div>
+  </div>
+</div>
 
         <div id="cropped_image"></div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Create an event!</button>
-
     </form>
 </div>
 

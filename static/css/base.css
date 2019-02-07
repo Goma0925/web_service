@@ -38,6 +38,10 @@ body {
 }
 
 .content-section{
-    height: auto
+    height: auto;
 }
 
+a{
+    text-decoration: none;
+    color: black;
+}

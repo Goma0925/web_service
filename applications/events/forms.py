@@ -52,21 +52,13 @@ class EventForm(forms.ModelForm):
 
     class Meta(): #Configures the model to work with
         model = Event
-        fields = ("name",  "start_date", "end_date","start_time", "end_time", "language", "description", "tags",)
+        fields = ("name",  "start_date", "end_date", "start_time", "end_time", "language", "description", "tags",)
         widgets = {
                    "description": forms.Textarea(),
-                   'start_time': DateTimePickerInput(options={
-                       "format": 'hh:mm a',
-                       "stepping": 15,
-                   }).start_of('Event time'),
-                   'end_time': DateTimePickerInput(options={
-                       "format": 'hh:mm a',
-                       "stepping": 15
-                   }).end_of('Event time'),
                    }
-        help_text = {
-            "start_time": "Please clear the end time before you change the start time",
-        }
+        # help_text = {
+        #     "start_time": "Please clear the end time before you change the start time",
+        # }
 
 
 class LocationForm(forms.ModelForm):

@@ -1,11 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from datetime import datetime
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth import get_user_model
 from django.contrib.postgres.fields import JSONField
-import json
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
+
+from datetime import datetime
+import json
 
 
 class UserAccountManager(BaseUserManager):
@@ -45,8 +48,8 @@ class UserAccountManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     #profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, default=None)
-    watch_list = JSONField(default=list)
-    hangouts_to_join = JSONField(default=list)
+    watch_list = JSONField(default=list, blank=True)
+    hangouts_to_join = JSONField(default=list, blank=True)
 
     is_staff = models.BooleanField(default=False,
                                    help_text='Designates whether the user is a team staff.')
@@ -60,6 +63,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserAccountManager()
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+    class Meta:
+        ordering = ('email',)
 
     def has_it_in_join_list(self, event_id):
         """
@@ -95,39 +100,51 @@ class User(AbstractBaseUser, PermissionsMixin):
         user_hangouts = self.hangouts_to_join
         user_hangouts.append(event_id)
         self.hangouts_to_join = user_hangouts
-        print(self, "added", event_id, "to its join list.")
+        #print(self, "added", event_id, "to its join list.")
         self.save()
 
     def remove_from_join_list(self, event_id):
         user_hangouts = self.hangouts_to_join
         user_hangouts.remove(event_id)
         self.hangouts_to_join = user_hangouts
-        print(self, "removed", event_id, "from its join list.")
+        #print(self, "removed", event_id, "from its join list.")
         self.save()
 
     def add_to_watch_list(self, event_id):
         watch_list = self.watch_list
         watch_list.append(event_id)
         self.watch_list = watch_list
-        print(self, "added", event_id, "to its watch list.")
+        #print(self, "added", event_id, "to its watch list.")
         self.save()
 
     def remove_from_watch_list(self, event_id):
         watch_list = self.watch_list
         watch_list.remove(event_id)
         self.watch_list = watch_list
-        print(self, "removed", event_id, "from its watch list.")
+        #print(self, "removed", event_id, "from its watch list.")
         self.save()
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False, related_name="profile")
     first_name = models.CharField(blank=False, default="", max_length=30)
     last_name = models.CharField(blank=False, default="", max_length=30)
     middle_name = models.CharField(blank=True, default="", max_length=30)
     birthday = models.DateField(null=True)
     where_you_live = models.CharField(default="", max_length=160)
     introduction = models.CharField(default="", max_length=300)
-    profile_image_storage_url = models.CharField(default="", max_length=160, blank=False)
+    profile_image_storage_url = models.CharField(default="", max_length=160,)
+
+    #Once the sender(user)'s save() is executed, this method is going to run.
+    # @receiver(post_save, sender=User)
+    # def create_user_profile(sender, instance, created, **kwargs):
+    #     if created:
+    #         Profile.objects.create(user=instance)
+    #
+    # @receiver(post_save, sender=User)
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.profile.save()
+
+
 
 

@@ -1,6 +1,10 @@
 import pkg_resources
+import sys
 
 #Write the modules installed of the current virtualenv into requirements.txt
+print("Interpreter:")
+print(sys.executable)
+print("Updating the requirements.txt...")
 modules = [module for module in pkg_resources.working_set]
 with open("requirements1.txt", "w") as file:
     content = ""
@@ -9,4 +13,3 @@ with open("requirements1.txt", "w") as file:
         print("Module:", (str(modules[i]).split(" ")[0] + "==" + str(modules[i]).split(" ")[1]))
     file.write(content)
     print("All module requirements added to requirements.txt.")
-

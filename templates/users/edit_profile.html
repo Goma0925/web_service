@@ -2,30 +2,77 @@
 {% load staticfiles %}
 {% load widget_tweaks %}
 
+{% block additional_head_2 %}
+    <script src="{% static 'js/jquery.ymdpulldown.js' %}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+{% endblock %}
+
 {% block dashboard %}
-    <p>Edit your profile</p>
-<form>
-    {{profile_form.first_name.label}}
+<p>Edit your profile</p>
+<form method="POST" id="user-profile-form">
+    {% csrf_token %}
     <div class="form-group">
-        {% render_field profile_form.first_name class+="form-control" place_holder="test" %}
+        {{profile_form.first_name.label}}:
+        {% render_field profile_form.first_name class+="form-control"%}
     </div>
-    {{profile_form.last_name.label}}
     <div class="form-group">
-        {% render_field profile_form.last_name class+="form-control" placeholder=user.last_name %}
+        {{profile_form.last_name.label}}:
+        {% render_field profile_form.last_name class+="form-control" %}
     </div>
-    {{profile_form.middle_name.label}}
     <div class="form-group">
-        {% render_field profile_form.middle_name class+="form-control" placeholder=user.middle_name %}
+        {{profile_form.middle_name.label}}:
+        {% render_field profile_form.middle_name class+="form-control"%}
     </div>
-    {{profile_form.birthday.label}}
+
     <div class="form-group">
-        {% render_field profile_form.birthday class+="form-control" placeholder=user.birthday %}
+        <label for="birthday-year birthday-month birthday-day">Birthday:</label>
+        <div class="input-group">
+            <select id="birthday-year" class="form-control" data-choice="year" data-select="{{birthday_year}}"></select>
+            <select id="birthday-month" class="form-control" data-choice="month" data-select="{{birthday_month}}"></select>
+            <select id="birthday-day" class="form-control" data-choice="day" data-select="{{birthday_day}}"></select>
+            {% render_field profile_form.birthday class+="form-control"%}
+        </div>
     </div>
-    <label for="id_where_you_live">Area you live in</label>
+
     <div class="form-group">
-        {% render_field profile_form.where_you_live class+="form-control" placeholder=user.where_you_live %}
+        <label for="id_where_you_live">Area you live in:</label>
+        {% render_field profile_form.where_you_live class+="form-control" %}
         *This information will be public.
     </div>
+    <label for="id_introduction">Introduce yourself:</label>
+    <div>
+        {% render_field profile_form.introduction class+="form-control" %}
+    </div><br>
     <button type="submit" class="btn btn-warning">Save</button>
 </form>
+
+<script>
+$(function() {
+  $("#birthday-year").ymdpulldown({
+                startyear:1920,
+              });
+  $("#birthday-month").ymdpulldown();
+  $("#birthday-day").ymdpulldown();
+});
+
+$("#test").click(function () {
+    var year = document.getElementById('birthday-year').value;
+    var month = document.getElementById('birthday-month').value;
+    var day = document.getElementById('birthday-day').value;
+    var $birthdayForm = document.getElementById('id_birthday');
+    $birthdayForm.value = year + "-" + month + "-" + day;
+  });
+
+$('#user-profile-form').submit(function() {
+    var year = document.getElementById('birthday-year').value;
+    var month = document.getElementById('birthday-month').value;
+    var day = document.getElementById('birthday-day').value;
+    var $birthdayForm = document.getElementById('id_birthday');
+    $birthdayForm.value = year + "-" + month + "-" + day;
+    return true;
+});
+</script>
 {% endblock %}

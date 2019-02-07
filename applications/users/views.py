@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -89,8 +89,39 @@ def retrieve_my_watchlist(request):
 
 @login_required
 def edit_profile(request):
-    profile_form = forms.ProfileForm()
-    user = request.user
-    print("Profile:", profile_form)
-    context = {"profile_form": profile_form, "user":user}
+    if request.method == 'POST':
+        profile_form = forms.ProfileForm(request.POST)
+        if profile_form.is_valid():
+            user = request.user
+            user.profile.first_name = profile_form.cleaned_data["first_name"]
+            user.profile.last_name = profile_form.cleaned_data["last_name"]
+            user.profile.middle_name = profile_form.cleaned_data["middle_name"]
+            user.profile.birthday = profile_form.cleaned_data["birthday"]
+            user.profile.where_you_live = profile_form.cleaned_data["where_you_live"]
+            user.profile.introduction = profile_form.cleaned_data["introduction"]
+            user.save()
+            user.profile.save()
+            return redirect(reverse("users:retrieve_profile"))
+        else:
+            print("Failed")
+
+    profile = request.user.profile
+    profile_form = forms.ProfileForm(
+        initial= {
+            "first_name": profile.first_name,
+            "last_name": profile.last_name,
+            "middle_name": profile.middle_name,
+            "birthday": profile.birthday,
+            "where_you_live": profile.where_you_live,
+            "introduction": profile.introduction,
+        }
+    )
+    user_birthday = str(profile.birthday).split("-")
+    context = {"profile_form": profile_form, "profile":profile, "birthday_year": user_birthday[0],
+               "birthday_month": user_birthday[1], "birthday_day": user_birthday[2]}
     return render(request, "users/edit_profile.html", context=context)
+
+def retrieve_profile(request):
+    profile = request.user.profile
+    context = {"profile": profile}
+    return render(request, "users/my_profile.html", context=context)
