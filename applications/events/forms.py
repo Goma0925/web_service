@@ -96,3 +96,6 @@ class BookmarkRequestForm(forms.Form):
     bookmark_request = forms.CharField(widget=forms.HiddenInput)
     def request_type(self):
         return self.cleaned_data.get('bookmark_request')
+
+class SearchForm(forms.Form):
+    search_string = forms.CharField()

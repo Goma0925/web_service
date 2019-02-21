@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +17,7 @@
     <!-- Custom styles for this template -->
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     {% block additional_head %}{% endblock %}
     {% block additional_head_2 %}{% endblock %}
 
@@ -25,36 +27,50 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-light fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="{% url 'events:retrieve_eventboard'%}">MeetLocals</a>
-        {% if DEBUG_MODE %}
-        <font size="3" color="red">DEBUG MODE IS ON</font>
-        {% endif %}
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'users:retrieve_my_hangouts'%}">My Page</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'events:create_event'%}">Create Hangout</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-            <li class="nav-item">
-              {% if user.is_authenticated %}
-                <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
-              {% else %}
-                <a class="nav-link" href="{% url 'users:login' %}">Login</a>
-              {% endif %}
-            </li>
-          </ul>
+      <div class="nav-container">
+        <div class="row">
+          <div class="col-4 col-sm-3 col-md-2 col-lg-2">
+            <a class="navbar-brand" href="{% url 'events:retrieve_eventboard'%}">MeetLocals</a>
+          </div>
+          <div class="col-8 col-sm-9 col-md-10 col-lg-3">
+              <form type="GET" autocomplete="false" id="search_form">
+                {% csrf_token %}
+                {% render_field search_form.search_string class+="form-control" placeholder="Search hangouts" %}
+              </form>
+              <button class="navbar-toggler" id="responsive-menu-button" type="button" data-toggle="collapse" data-target="#resposiveNav" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+              </button>
+          </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-7">
+            <div class="collapse navbar-collapse" id="resposiveNav">
+              <ul class="navbar-nav ml-auto">
+                <li>
+                {% if DEBUG_MODE %}
+                  <a class="nav-link" href="#"><font size="3" color="red">MAINTAINANCE</font></a>
+                </li>
+                {% endif %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'users:retrieve_my_hangouts'%}">My Page</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="{% url 'events:create_event'%}">Create Hangout</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li class="nav-item">
+                  {% if user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
+                  {% else %}
+                    <a class="nav-link" href="{% url 'users:login' %}">Login</a>
+                  {% endif %}
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -64,13 +80,12 @@
       {% block content %}
       {% endblock %}
     </div>
-
     <!-- /.container -->
 
     <!-- Footer -->
-    <footer class="py-5">
+    <footer class="py-5 footer">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+        <p class="m-0 text-center text-white">Copyright &copy; My Website 2018</p>
       </div>
       <!-- /.container -->
     </footer>

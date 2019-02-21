@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
+<div class="row row-option">
     <div class="col-xs-12 col-md-2" >
       <div id="sidebar">
         <p>My page</p>
@@ -15,11 +15,9 @@
         <a href="{% url 'users:retrieve_profile'%}">Profile</a>
       </div>
     </div>
-    <div class="col-xs-12 col-md-9">
-      <div class="dashboard">
+    <div class="col-xs-12 col-md-9 dashboard">
           {% block dashboard %}
           {% endblock %}
-      </div>
     </div>
 </div>
 

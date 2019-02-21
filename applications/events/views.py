@@ -10,41 +10,47 @@ from applications.events import forms
 from datetime import datetime
 import random
 #Additional Django libs
-from . import post_reformatter, views_support_script
+from . import views_support_scripts
 import django.apps
 
-def retrieve_eventboard(request):
+def retrieve_eventboard(request, search_query=""):
     current_page_num = request.GET.get('page', 1)
     # Sort by nearest upcoming events
-    today = timezone.now()
-    future_events = Event.objects.filter(start_date__gte=today)
-    for event in future_events:
+    if request.method == "GET" and "search_string" in request.GET:
+        print("Searching for:", request.GET)
+        query_string = request.GET['search_string']
+        entry_query = views_support_scripts.get_query(query_string, ['name'])
+        events_found = Event.objects.filter(entry_query).order_by('start_date')
+        print("Seached:", events_found)
+    else:
+        today = timezone.now()
+        events_found = Event.objects.filter(start_date__gte=today).order_by('start_date')
+        print("Query-type:", type(events_found))
 
-        #pass
+    for event in events_found:
         #Reformat the date string
         event.start_date = str(event.start_date.month) + "/" + str(event.start_date.day)
         event.end_date = str(event.end_date.month) + "/" + str(event.end_date.day)
         event.start_time = str(event.end_time)
         event.end_time = str(event.end_time)
-        print(event.start_date)
-        print(event.end_date)
-        print(event.start_time)
-        print(event.end_time)
+        #print(event.start_date)
+        #print(event.end_date)
+        #print(event.start_time)
+        #print(event.end_time)
 
-
-    paginator = Paginator(future_events, 24)
+    paginator = Paginator(events_found, 24)
     try:
-        future_events = paginator.page(current_page_num)
+        events_found = paginator.page(current_page_num)
     except PageNotAnInteger:
-        future_events = paginator.page(1)
+        events_found = paginator.page(1)
     except EmptyPage:
-        future_events = paginator.page(paginator.num_pages)
+        events_found = paginator.page(paginator.num_pages)
 
-    page_range = future_events.paginator.page_range
-    page_has_previous = future_events.has_previous()
-    page_has_next = future_events.has_next()
+    page_range = events_found.paginator.page_range
+    page_has_previous = events_found.has_previous()
+    page_has_next = events_found.has_next()
     #https://simpleisbetterthancomplex.com/tutorial/2016/08/03/how-to-paginate-with-django.html
-    return render(request, "events/eventboard.html", {"events": future_events, "page_range": page_range,
+    return render(request, "events/eventboard.html", {"events": events_found, "page_range": page_range,
                                                      "current_page_num": current_page_num,
                                                      "page_has_previous": page_has_previous, "page_has_next": page_has_next,
                                                     })

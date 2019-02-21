@@ -1,11 +1,22 @@
+html{
+  height: 100%;
+}
+
 body {
   padding-top: 54px;
+  height: 100%;
+  position: relative;
 }
 
 @media (min-width: 992px) {
   body {
     padding-top: 56px;
   }
+}
+
+a{
+    text-decoration: none;
+    color: black;
 }
 
 .navbar{
@@ -39,9 +50,34 @@ body {
 
 .content-section{
     height: auto;
+    height: 100%;
 }
 
-a{
-    text-decoration: none;
-    color: black;
+.nav-container{
+  width: 100%;
+}
+
+#pagination{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#search_form{
+  float: left;
+  width: 70%;
+  margin: 0;
+}
+
+#responsive-search-button{
+  float: right;
+  margin-right: 0.5em;
+  height: 2em;
+  width: 2.7em;
+}
+
+#responsive-menu-button{
+  float: right;
+  margin-right: 0;
+  height: 2em;
+  width: 2.7em;
 }
