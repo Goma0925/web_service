@@ -13,7 +13,7 @@ from taggit.managers import TaggableManager
 #--------------------------------------------------------------------------------------------------------
 #                                   Support functions for models.
 
-HANGOUT_IMAGE_DIR = 'hangout_image/'
+#HANGOUT_IMAGE_DIR = 'hangout_image/' - NOW DEFINED IN settings
 # def get_image_storage_path(instance, filename):
 #     print("get_image_storage_path: instance =", type(instance), instance)
 #     print("event_id", instance.event_id)
@@ -69,5 +69,3 @@ class Event(models.Model):
 
     def __str__(self):
         return str(self.name)
-
-

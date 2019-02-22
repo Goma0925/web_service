@@ -2,7 +2,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from applications.users.models import User, UserProfile
 import datetime
-
+from PIL import Image
+from applications.users import views_support_scripts
+from django.conf import settings
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -63,3 +65,29 @@ class ProfileForm(forms.ModelForm):
     #         UserProfile.objects.filter(id=profile.id)
     #         print("Profile saved")
     #     return profile
+
+class ProfileImageForm(forms.Form):
+    x = forms.FloatField(widget=forms.HiddenInput())
+    y = forms.FloatField(widget=forms.HiddenInput())
+    width = forms.FloatField(widget=forms.HiddenInput())
+    height = forms.FloatField(widget=forms.HiddenInput())
+    image = forms.ImageField()
+    def save_image_of(self, user):
+        #print("cleaned_date:", self.cleaned_data)
+        image_x = self.cleaned_data.get('x')
+        image_y = self.cleaned_data.get('y')
+        image_width = self.cleaned_data.get('width')
+        image_height = self.cleaned_data.get('height')
+        #print("Coordinates:", image_x, image_y, image_width, image_height)
+        # Resize the image and store it in media dir.
+        image = Image.open(self.cleaned_data.get('image'))  # event.image
+        cropped_image = image.crop((image_x, image_y, image_width + image_x, image_height + image_y))
+        resized_image = cropped_image.resize((700, 400), Image.ANTIALIAS)
+        circle_thumnail = views_support_scripts.put_circle_layer_on(resized_image)
+        image_storage_path = os.path.join(settings.MEDIA_ROOT, settings.THUMBNAIL_IMAGE_DIR, user.id)
+        image_storage_url = settings.MEDIA_URL + settings.THUMBNAIL_IMAGE_DIR + user.id + "/"
+        try:
+            circle_thumnail.save(image_storage_path, format="JPEG")  # Image.save() saves the image in a file at the given path(event.image.path)
+        except Exception:
+            raise forms.ValidationError("This type of image file cannot be used.")
+        return str(image_storage_url)

@@ -18,6 +18,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
+THUMBNAIL_IMAGE_DIR = os.path.join(MEDIA_ROOT, "user_thumbnails")
+HANGOUT_IMAGE_DIR = os.path.join(MEDIA_ROOT, "hangout_image")
 sys.path.insert(0, os.path.join(BASE_DIR, 'applications'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -153,6 +155,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
 
 LOGIN_REDIRECT_URL = 'events:retrieve_eventboard'
 LOGOUT_REDIRECT_URL = 'events:retrieve_eventboard'

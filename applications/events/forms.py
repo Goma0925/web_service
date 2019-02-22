@@ -7,7 +7,7 @@ import random
 import string
 from PIL import Image
 import os
-from applications.events.models import HANGOUT_IMAGE_DIR
+#from applications.events.models import HANGOUT_IMAGE_DIR
 
 
 class EventForm(forms.ModelForm):
@@ -66,6 +66,7 @@ class LocationForm(forms.ModelForm):
         model = Location
         fields = ("location_name", "address")
 
+
 class EventImageForm(forms.Form):
     x = forms.FloatField(widget=forms.HiddenInput())
     y = forms.FloatField(widget=forms.HiddenInput())
@@ -83,8 +84,8 @@ class EventImageForm(forms.Form):
         image = Image.open(self.cleaned_data.get('image'))  # event.image
         cropped_image = image.crop((image_x, image_y, image_width + image_x, image_height + image_y))
         resized_image = cropped_image.resize((700, 400), Image.ANTIALIAS)
-        image_storage_path = os.path.join(settings.MEDIA_ROOT, HANGOUT_IMAGE_DIR, event.event_id)
-        image_storage_url = settings.MEDIA_URL + HANGOUT_IMAGE_DIR + event.event_id + "/"
+        image_storage_path = os.path.join(settings.MEDIA_ROOT, settings.HANGOUT_IMAGE_DIR, event.event_id)
+        image_storage_url = settings.MEDIA_URL + settings.HANGOUT_IMAGE_DIR + event.event_id + "/"
         try:
             resized_image.save(image_storage_path, format="JPEG")  # Image.save() saves the image in a file at the given path(event.image.path)
         except Exception:
