@@ -1,3 +1,4 @@
+import os
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from applications.users.models import User, UserProfile
@@ -73,21 +74,27 @@ class ProfileImageForm(forms.Form):
     height = forms.FloatField(widget=forms.HiddenInput())
     image = forms.ImageField()
     def save_image_of(self, user):
-        #print("cleaned_date:", self.cleaned_data)
+        img_format = ".jpg"
+        stored_time = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
+        print("time format:", stored_time)
+
         image_x = self.cleaned_data.get('x')
         image_y = self.cleaned_data.get('y')
         image_width = self.cleaned_data.get('width')
         image_height = self.cleaned_data.get('height')
-        #print("Coordinates:", image_x, image_y, image_width, image_height)
+        print("Coordinates:", image_x, image_y, image_width, image_height)
         # Resize the image and store it in media dir.
-        image = Image.open(self.cleaned_data.get('image'))  # event.image
+        image = Image.open(self.cleaned_data.get('image'))
         cropped_image = image.crop((image_x, image_y, image_width + image_x, image_height + image_y))
-        resized_image = cropped_image.resize((700, 400), Image.ANTIALIAS)
-        circle_thumnail = views_support_scripts.put_circle_layer_on(resized_image)
-        image_storage_path = os.path.join(settings.MEDIA_ROOT, settings.THUMBNAIL_IMAGE_DIR, user.id)
-        image_storage_url = settings.MEDIA_URL + settings.THUMBNAIL_IMAGE_DIR + user.id + "/"
+        resized_image = cropped_image.resize((500, 500), Image.ANTIALIAS)
+        file_name = "profileImg_" + str(user.id) + "_" + stored_time + img_format
+        image_storage_path = os.path.join(settings.MEDIA_ROOT, settings.PROFILE_IMAGE_DIR, file_name)
+        print("image_storage_path", image_storage_path)
+        image_storage_url = settings.MEDIA_URL + settings.PROFILE_IMAGE_URL.lstrip("/") + file_name + "/"
+        print("Profile storage", settings.PROFILE_IMAGE_URL, "|", image_storage_url)
         try:
-            circle_thumnail.save(image_storage_path, format="JPEG")  # Image.save() saves the image in a file at the given path(event.image.path)
-        except Exception:
-            raise forms.ValidationError("This type of image file cannot be used.")
+            resized_image.save(image_storage_path, format="JPEG")  # Image.save() saves the image in a file at the given path(event.image.path)
+        except Exception as e:
+            #print("Image failed to be saved:", e)
+            raise forms.ValidationError("Error occured when saving the image")
         return str(image_storage_url)

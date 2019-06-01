@@ -126,7 +126,7 @@ var sameDay = true;/* Specify if the startDay and endDay are the same */
 var isSameDay = function() {
     startDayStr = document.getElementById('start-date').value;
     endDayStr = document.getElementById('end-date').value;
-    console.log(startDayStr, "==", endDayStr)
+    /*console.log(startDayStr, "==", endDayStr)*/
     if (startDayStr == endDayStr){ console.log("SameDay=True"); return true;} else {console.log("SameDay=True");return false;}
 }
 
@@ -144,6 +144,10 @@ $('#end-date').datetimepicker({
                                 format: "MM-DD-YYYY",
                                 minDate: today,
                                 });
+
+$('#end-time').datetimepicker({
+                            format: "LT",
+                            stepping: 15,});
 
 /* CHANGE THE minDate FOR END DATE PICKER */
 $('#start-date').on("change.datetimepicker", function(){
@@ -174,10 +178,6 @@ $('#end-date').on("change.datetimepicker", function(){
         $('#end-time').datetimepicker("minDate", false);
     }
 });
-
-$('#end-time').datetimepicker({
-                            format: "LT",
-                            stepping: 15,});
 
 $('#start-time').on("change.datetimepicker", function(){
     if (isSameDay()){

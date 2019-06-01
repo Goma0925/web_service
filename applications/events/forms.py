@@ -1,14 +1,16 @@
+#Django libs
 from django import forms
 from applications.events.models import Event, Location
 from applications.users.models import User
 from django.conf import settings
-from bootstrap_datepicker_plus import DateTimePickerInput
+#Python libs
 import random
 import string
+import datetime
 from PIL import Image
 import os
-#from applications.events.models import HANGOUT_IMAGE_DIR
-
+#Other additional libs
+from bootstrap_datepicker_plus import DateTimePickerInput
 
 class EventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -55,6 +57,8 @@ class EventForm(forms.ModelForm):
         fields = ("name",  "start_date", "end_date", "start_time", "end_time", "language", "description", "tags",)
         widgets = {
                    "description": forms.Textarea(),
+                   #"start_time": forms.Select(),
+                   #"end_time": forms.Select(),
                    }
         # help_text = {
         #     "start_time": "Please clear the end time before you change the start time",
@@ -74,6 +78,9 @@ class EventImageForm(forms.Form):
     height = forms.FloatField(widget=forms.HiddenInput())
     image = forms.ImageField()
     def save_image_of(self, event):
+        img_format = ".jpg"
+        stored_time = datetime.datetime.now().strftime("%m%d%Y%H%M%S")
+        #print("time format:", stored_time)
         #print("cleaned_date:", self.cleaned_data)
         image_x = self.cleaned_data.get('x')
         image_y = self.cleaned_data.get('y')
@@ -84,9 +91,13 @@ class EventImageForm(forms.Form):
         image = Image.open(self.cleaned_data.get('image'))  # event.image
         cropped_image = image.crop((image_x, image_y, image_width + image_x, image_height + image_y))
         resized_image = cropped_image.resize((700, 400), Image.ANTIALIAS)
-        image_storage_path = os.path.join(settings.MEDIA_ROOT, settings.HANGOUT_IMAGE_DIR, event.event_id)
-        image_storage_url = settings.MEDIA_URL + settings.HANGOUT_IMAGE_DIR + event.event_id + "/"
+
+        file_name = event.event_id + "_" + stored_time + img_format
+        image_storage_path = os.path.join(settings.MEDIA_ROOT, settings.HANGOUT_IMAGE_DIR, file_name)
+        image_storage_url = settings.MEDIA_URL + settings.HANGOUT_IMAGE_URL + file_name + "/"
         try:
+            print("Saving img at PATH:", image_storage_path)
+            print("Saving img at URL:", image_storage_url)
             resized_image.save(image_storage_path, format="JPEG")  # Image.save() saves the image in a file at the given path(event.image.path)
         except Exception:
             raise forms.ValidationError("This type of image file cannot be used.")

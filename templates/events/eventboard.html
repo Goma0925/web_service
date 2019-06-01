@@ -8,9 +8,22 @@
   {% block content%}
     <!-- Page Content -->
     <div class="container">
-
       <!-- Page Heading -->
-      <center><h1 class="my-4">Upcoming Hangouts</h1></center>
+      <center>
+      </center>
+      <center>
+
+        <h1 class="my-4">
+          {% if is_searching %}
+            {% if has_no_result %}
+              <span>Sorry, "{{search_string}}" did not match any results.</span>
+            {% else %}
+              <span>Search result of "{{search_string}}"</span>
+            {% endif %}
+          {% else %}
+            <span>Upcoming Hangouts</span>
+          {% endif %}
+          </h1></center>
       <!-- event info -->
       <div class="row">
         {% for event in events %}

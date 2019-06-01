@@ -4,7 +4,7 @@ from applications.events import models
 # Register your models here.
 @admin.register(models.Event)
 class EventModelAdmin(admin.ModelAdmin):
-    list_display = ('name', "location", "host_name", "host")
+    list_display = ('name', "event_id", "location", "host_name", "host")
     search_fields = ("name", )
 
 @admin.register(models.Location)

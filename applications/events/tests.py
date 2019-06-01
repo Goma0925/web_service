@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.conf import settings
 #from django.conf import settings
 #settings.configure()
 from applications.events.models import Event, Location
@@ -18,21 +19,24 @@ class EventPopulator():
     def create_events(self, num):
         counter = 0
 
-        for i in range(num):
+        for i in range(100):
             username = self.faker.name()
             email = username.split(" ")[0] + "." + username.split(" ")[1] + "@gmail.com"
-            user = User(email=email, username=username, is_staff=False, is_superuser=False, date_joined=datetime.datetime.now())
+            user = User(email=email, is_staff=False, is_superuser=False, date_joined=datetime.datetime.now())
             user.save()
 
             language = "English"
-            location = Location.objects.get_or_create(location_name="Centre College")
+            location_name = self.faker.text().split(" ")[0]
+            location = Location.objects.get_or_create(location_name=location_name)
             tags = self.generate_tag_string()
             rand_day = self.generate_random_date()
             start_time, end_time = self.generate_random_time(rand_day)
-            event = Event(event_id=self.generate_event_id(),
-                          image_storage_path=settings.MEDIA_URL + HANGOUT_IMAGE_DIR + "1ZB9IT4307" + "/",
-                          name=self.generate_event_name(), date=rand_day, start_time=start_time, end_time=end_time,
-                          language=language, tags=tags, location=location[0], description="Event Description", host_name=username, host=user)
+            event_id = self.generate_event_id()
+            event_name = self.generate_event_name() + "(" + event_id + ")"
+            event = Event(event_id=event_id,
+                          image_storage_url=settings.MEDIA_URL + "placeholders/placeholder_700x400.png/",
+                          name= self.generate_event_name(), start_date=rand_day, end_date=rand_day, start_time=start_time, end_time=end_time,
+                          language=language, tags=tags, location=location[0], description="Created by tests.py", host_name=username, host=user)
             event.save()
             counter +=1
         print(str(counter) + " events and users have been added.")

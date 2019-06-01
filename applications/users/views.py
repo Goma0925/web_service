@@ -1,14 +1,18 @@
+#Django libs
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+import pytz #time zone lib. Might not be needed?
+#Django modules
 from applications.users import forms
 from applications.users.models import User
-from django.utils import timezone
-import pytz #time zone lib. Might not be needed?
 from applications.events.models import Event
-from django.contrib.auth.decorators import login_required
+#Additional Django libs
+
 
 
 def signup(request):
@@ -103,9 +107,12 @@ def edit_profile(request):
             user.profile.save()
             return redirect(reverse("users:retrieve_profile"))
         else:
+            print(profile_form.errors)
+            print(profile_image_form.errors)
             print("Failed")
 
     profile = request.user.profile
+    #Fill in the profile_form with the current profile data
     profile_form = forms.ProfileForm(
         initial= {
             "first_name": profile.first_name,
@@ -116,12 +123,35 @@ def edit_profile(request):
             "introduction": profile.introduction,
         }
     )
+
     user_birthday = str(profile.birthday).split("-")
     context = {"profile_form": profile_form, "profile":profile, "birthday_year": user_birthday[0],
-               "birthday_month": user_birthday[1], "birthday_day": user_birthday[2]}
+               "birthday_month": user_birthday[1], "birthday_day": user_birthday[2],}
     return render(request, "users/edit_profile.html", context=context)
 
 def retrieve_profile(request):
     profile = request.user.profile
     context = {"profile": profile}
     return render(request, "users/my_profile.html", context=context)
+
+def edit_my_images(request):
+    if request.method == 'POST':
+        profile_image_form = forms.ProfileImageForm(request.POST, request.FILES)
+
+        #test
+        #from pprint import pprint
+        print(vars(profile_image_form))
+        if profile_image_form.is_valid():
+            user = request.user
+            user.profile.profile_image_storage_url = profile_image_form.save_image_of(user)
+            #print("user.profile.profile_image_storage_url: ", user.profile.profile_image_storage_url)
+            user.profile.save()
+            #print("image saved")
+        else:
+            print(profile_image_form.errors)
+
+    profile_image_form = forms.ProfileImageForm()
+    profile_image_storage_url = request.user.profile.profile_image_storage_url
+    #print("profile_image_storage_url: ", profile_image_storage_url)
+    context = {"profile_image_form": profile_image_form, "profile_image_storage_url": profile_image_storage_url}
+    return render(request, "users/edit_images.html", context=context)

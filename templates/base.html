@@ -20,7 +20,13 @@
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     {% block additional_head %}{% endblock %}
     {% block additional_head_2 %}{% endblock %}
-
+    <script>
+        var jumpToEventboard = function(){
+          console.log("Hi");
+          window.alert("hi");
+          window.location.href = "http://stackoverflow.com";
+        }
+    </script>
   </head>
 
   <body>
@@ -33,7 +39,7 @@
             <a class="navbar-brand" href="{% url 'events:retrieve_eventboard'%}">MeetLocals</a>
           </div>
           <div class="col-8 col-sm-9 col-md-10 col-lg-3">
-              <form type="GET" autocomplete="off" id="search_form">
+              <form type="GET" autocomplete="off" action="{{domain_name}}{% url 'events:retrieve_eventboard'%}" id="search_form">
                 {% csrf_token %}
                 {% render_field search_form.search_string class+="form-control" placeholder="Search hangouts" %}
               </form>
@@ -91,9 +97,9 @@
     </footer>
 
     {% block script_source %}
+    {% endblock %}
     <!-- Bootstrap core JavaScript -->
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    {% endblock %}
   </body>
 
 </html>

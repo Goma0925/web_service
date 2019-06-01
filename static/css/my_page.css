@@ -2,6 +2,31 @@ body {
   padding-top: 54px;
 }
 
+#sidebar{
+    margin-bottom: 30px;
+    padding: 30px;
+}
+
+#sidebar a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #818100;
+  display: block;
+}
+
+.board-item{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.content-section{
+    height: 100%
+    margin-left: 60px;
+    margin-right: 60px;
+    margin-bottom: 60px;
+}
+
+
 .row-option{
   position: relative;
   height: 100%;
@@ -18,21 +43,12 @@ body {
     bottom: 0;
 }
 
-#sidebar{
-    margin-bottom: 30px;
-    padding: 30px;
+.profile-img{
+  border-radius: 50%;
+  width: 100%;
+  height:100%;
 }
 
-.content-section{
-    height: 100%
-    margin-left: 60px;
-    margin-right: 60px;
-    margin-bottom: 60px;
-}
-
-#sidebar a {
-  text-decoration: none;
-  font-size: 18px;
-  color: #818100;
-  display: block;
+.row.image-section{
+  margin-bottom: 20px;
 }

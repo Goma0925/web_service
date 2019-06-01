@@ -14,12 +14,15 @@ import os, sys
 import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+DOMAIN = "http://127.0.0.1:8000"
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
-THUMBNAIL_IMAGE_DIR = os.path.join(MEDIA_ROOT, "user_thumbnails")
-HANGOUT_IMAGE_DIR = os.path.join(MEDIA_ROOT, "hangout_image")
+PROFILE_IMAGE_URL = "profile_images/"
+PROFILE_IMAGE_DIR = os.path.join(MEDIA_ROOT, "profile_images")
+HANGOUT_IMAGE_URL = "hangout_images/"
+HANGOUT_IMAGE_DIR = os.path.join(MEDIA_ROOT, "hangout_images")
 sys.path.insert(0, os.path.join(BASE_DIR, 'applications'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
@@ -93,6 +96,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 "applications.events.context_processors.debug_mode_flag",
                 "applications.events.context_processors.search_form",
+                "applications.events.context_processors.domain_name",
+
             ],
         },
     },

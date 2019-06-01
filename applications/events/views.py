@@ -14,25 +14,31 @@ from . import views_support_scripts
 import django.apps
 
 def retrieve_eventboard(request, search_query=""):
+    is_searching = False
+    has_no_result = False
+    search_string = ""
     current_page_num = request.GET.get('page', 1)
     # Sort by nearest upcoming events
     if request.method == "GET" and "search_string" in request.GET:
-        print("Searching for:", request.GET)
+        is_searching = True
+        search_string = request.GET['search_string']
         query_string = request.GET['search_string']
         entry_query = views_support_scripts.get_query(query_string, ['name'])
         events_found = Event.objects.filter(entry_query).order_by('start_date')
-        print("Seached:", events_found)
+        if len(events_found) == 0:
+            has_no_result = True
+        #print("Seached:", events_found)
     else:
         today = timezone.now()
         events_found = Event.objects.filter(start_date__gte=today).order_by('start_date')
-        print("Query-type:", type(events_found))
 
+        #print("Query-type:", type(events_found))
     for event in events_found:
         #Reformat the date string
         event.start_date = str(event.start_date.month) + "/" + str(event.start_date.day)
         event.end_date = str(event.end_date.month) + "/" + str(event.end_date.day)
-        event.start_time = str(event.end_time)
-        event.end_time = str(event.end_time)
+        #event.start_time = str(event.end_time)
+        #event.end_time = str(event.end_time)
         #print(event.start_date)
         #print(event.end_date)
         #print(event.start_time)
@@ -53,6 +59,9 @@ def retrieve_eventboard(request, search_query=""):
     return render(request, "events/eventboard.html", {"events": events_found, "page_range": page_range,
                                                      "current_page_num": current_page_num,
                                                      "page_has_previous": page_has_previous, "page_has_next": page_has_next,
+                                                     "search_string": search_string,
+                                                     "is_searching": is_searching,
+                                                     "has_no_result": has_no_result,
                                                     })
 
 
@@ -80,6 +89,11 @@ def retrieve_event_info(request, event_id="default"):
     else:
         event = event_query[0] #Extract event obj from queryset
         event_exisists = True
+        host_name = event.host.profile.first_name + " " + event.host.profile.last_name
+        print(host_name)
+        host_img_url = event.host.profile.profile_image_storage_url
+
+    no_user_img_icon_url = settings.MEDIA_URL + "no_photo_icon.jpg/"
 
     bookmark_request_form = forms.BookmarkRequestForm()
     if request.user.is_authenticated:
@@ -93,7 +107,10 @@ def retrieve_event_info(request, event_id="default"):
                       "event_exists": event_exisists,
                       "bookmark_request_form": bookmark_request_form,
                       "added_to_watch_list": added_to_watch_list,
-                      "added_to_join_list": added_to_join_list
+                      "added_to_join_list": added_to_join_list,
+                      "host_name": host_name,
+                      "host_img_url": host_img_url,
+                      "no_user_img_icon": no_user_img_icon_url,
                       }
     return render(request, "events/event_info.html", context_dict)
 
@@ -103,9 +120,9 @@ def create_event(request):
         #Reformat the start_time/end_time.
         #print("Request:", request.POST)
         #print("Files from form:", request.FILES)
-        print("Request:")
-        print(request.POST)
-        print(request.FILES)
+        #print("Request:")
+        #print(request.POST)
+        #print(request.FILES)
         updated_request_POST = request.POST.copy()
         start_date_datetime = datetime.strptime(str(request.POST["start_date"]), "%m-%d-%Y")
         start_time_datetime = datetime.strptime(str(request.POST["start_time"]), "%I:%M %p")
@@ -130,13 +147,13 @@ def create_event(request):
             event_form.save_m2m() #To save tags field.
             return redirect("events:confirm_new_event", event_id=event.event_id)
         else:
-            print("FORM ERRORS:")
-            print("EVENT_FORM:")
-            print(event_form.errors)
-            print("IMAGE_FORM")
-            print(event_image_form.errors)
-            print("Location_form:")
-            print(location_form)
+            #print("FORM ERRORS:")
+            #print("EVENT_FORM:")
+            #print(event_form.errors)
+            #print("IMAGE_FORM")
+            #print(event_image_form.errors)
+            #print("Location_form:")
+            #print(location_form)
             return render(request, "events/new_event_form.html",
                           {"event_form": event_form, "event_image_form": event_image_form,
                            "location_form": location_form, })
