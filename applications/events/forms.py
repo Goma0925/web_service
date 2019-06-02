@@ -12,6 +12,8 @@ import os
 #Other additional libs
 from bootstrap_datepicker_plus import DateTimePickerInput
 
+timeTuples = ('00:00', '00:30', '01:00', '01:30', '02:00', '02:30', '03:00', '03:30', '04:00', '04:30', '05:00', '05:30', '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30')
+
 class EventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.issued_event_id = "XXXXXXXXXX"
@@ -57,8 +59,8 @@ class EventForm(forms.ModelForm):
         fields = ("name",  "start_date", "end_date", "start_time", "end_time", "language", "description", "tags",)
         widgets = {
                    "description": forms.Textarea(),
-                   #"start_time": forms.Select(),
-                   #"end_time": forms.Select(),
+                   "start_time": forms.Select(),
+                   "end_time": forms.Select(),
                    }
         # help_text = {
         #     "start_time": "Please clear the end time before you change the start time",

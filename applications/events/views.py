@@ -123,6 +123,7 @@ def create_event(request):
         #print("Request:")
         #print(request.POST)
         #print(request.FILES)
+        print("Startime: " + str(request.POST["start_time"]))
         updated_request_POST = request.POST.copy()
         start_date_datetime = datetime.strptime(str(request.POST["start_date"]), "%m-%d-%Y")
         start_time_datetime = datetime.strptime(str(request.POST["start_time"]), "%I:%M %p")
@@ -145,6 +146,7 @@ def create_event(request):
             event.host = user
             event.save()
             event_form.save_m2m() #To save tags field.
+            user.add_to_hosting_list(event.event_id)
             return redirect("events:confirm_new_event", event_id=event.event_id)
         else:
             #print("FORM ERRORS:")

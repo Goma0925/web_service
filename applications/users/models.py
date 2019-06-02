@@ -49,8 +49,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     #profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, default=None)
     watch_list = JSONField(default=list, blank=True)
-    hangouts_to_join = JSONField(default=list, blank=True)
-
+    join_list = JSONField(default=list, blank=True)
+    hosting_list = JSONField(default=list, blank=True)
     is_staff = models.BooleanField(default=False,
                                    help_text='Designates whether the user is a team staff.')
 
@@ -70,9 +70,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         :param User_obj:
         :param event_id:
-        :return: Checks if the user object has event_id in its hangouts_to_join list.
+        :return: Checks if the user object has event_id in its join_list list.
         """
-        user_hangouts = self.hangouts_to_join
+        user_hangouts = self.join_list
         if event_id in user_hangouts:
             #print(self, event_id, "in watch_list:", watch_list)
             return True
@@ -85,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         :param User_obj:
         :param event_id:
-        :return: Checks if the user object has event_id in its hangouts_to_join list.
+        :return: Checks if the user object has event_id in its join_list list.
         """
         watch_list = self.watch_list
         if event_id in watch_list:
@@ -97,16 +97,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
     def add_to_join_list(self, event_id):
-        user_hangouts = self.hangouts_to_join
+        user_hangouts = self.join_list
         user_hangouts.append(event_id)
-        self.hangouts_to_join = user_hangouts
+        self.join_list = user_hangouts
         #print(self, "added", event_id, "to its join list.")
         self.save()
 
     def remove_from_join_list(self, event_id):
-        user_hangouts = self.hangouts_to_join
+        user_hangouts = self.join_list
         user_hangouts.remove(event_id)
-        self.hangouts_to_join = user_hangouts
+        self.join_list = user_hangouts
         #print(self, "removed", event_id, "from its join list.")
         self.save()
 
@@ -122,6 +122,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         watch_list.remove(event_id)
         self.watch_list = watch_list
         #print(self, "removed", event_id, "from its watch list.")
+        self.save()
+
+    def add_to_hosting_list(self, event_id):
+        hosting_list = self.hosting_list
+        hosting_list.append(event_id)
+        self.hosting_list = hosting_list
+        print(self, "added", event_id, "to hosting_list")
         self.save()
 
 
@@ -144,7 +151,3 @@ class UserProfile(models.Model):
     # @receiver(post_save, sender=User)
     # def save_user_profile(sender, instance, **kwargs):
     #     instance.profile.save()
-
-
-
-

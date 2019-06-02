@@ -12,8 +12,7 @@
             <center><h1>{{event.name}}</h1></center>
             <center><img alt="Hangout Image" src={{event.image_storage_url}}/></center>
             <div class="event_info"><br>
-              <span>Date:&nbsp&nbsp&nbsp{{event.start_date}}&nbsp;-&nbsp;{{event.end_date}}&nbsp;&nbsp;</span><br>
-              <span>Time:&nbsp&nbsp&nbsp{{event.start_time}} ~ {{event.end_time}}</span><br>
+              <span>Date & Time:&nbsp;&nbsp;&nbsp;{{event.start_date}}/{{event.start_time}}&nbsp;-&nbsp;{{event.end_date}}/{{event.end_time}}</span><br>
               <span>Language:&nbsp;{{event.language}}</span><br>
               <span>Tags: {{event.tags.all|join:", "}}</span><br>
               <hr>

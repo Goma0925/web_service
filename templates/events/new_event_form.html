@@ -30,7 +30,6 @@
             </div>
         {% endfor %}
     {% endif %}
-    <p>--------</p>
     {% if event_form.errors %}
     {% for field in event_form %}
         {% for error in field.errors %}
@@ -38,7 +37,7 @@
         {% endfor %}
     {% endfor %}
 {% endif %}
-
+    <p><b>Please enter the information to host a hangout.</b></p>
     <form method="POST" enctype="multipart/form-data" id="formUpload" autocomplete="off">
         {% csrf_token %}
 
@@ -120,34 +119,73 @@
 
 <script>
 /* SCRIPT FOR DATEPICKER */
+
+/*Initialize timepickers*/
+var timeChoices = ['12:00 AM', '12:30 AM', '01:00 AM', '01:30 AM', '02:00 AM', '02:30 AM', '03:00 AM', '03:30 AM',
+                  '04:00 AM', '04:30 AM', '05:00 AM', '05:30 AM', '06:00 AM', '06:30 AM', '07:00 AM', '07:30 AM',
+                  '08:00 AM', '08:30 AM', '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
+                  '12:00 PM', '12:30 PM', '01:00 PM', '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM',
+                 '04:00 PM', '04:30 PM', '05:00 PM', '05:30 PM', '06:00 PM', '06:30 PM', '07:00 PM', '07:30 PM',
+                 '08:00 PM', '08:30 PM', '09:00 PM', '09:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM']
+
+var startTimePicker = $('#start-time');
+var endTimePicker = $('#end-time');
+
+var initStartTimePicker = function(){
+  startTimePicker.empty();
+  timeChoices.forEach(function(d){
+    choiceNode = document.createElement("option");
+    textNode = document.createTextNode(d);
+    choiceNode.appendChild(textNode);
+    startTimePicker.append(choiceNode);
+  });
+};
+
+var initEndTimePicker = function(){
+  endTimePicker.empty();
+  timeChoices.forEach(function(d){
+    choiceNode = document.createElement("option");
+    textNode = document.createTextNode(d);
+    choiceNode.appendChild(textNode);
+    endTimePicker.append(choiceNode);
+  });
+};
+
+//Adjust endTimePicker so its value does not go before the starting time.
+var adjustEndTimerPicker = function(){
+  endTimePicker.empty();
+  startTimeIndex = timeChoices.indexOf(startTimePicker.val());
+  timeChoices.slice(startTimeIndex + 1, timeChoices.length).forEach(function(d){
+    choiceNode = document.createElement("option");
+    textNode = document.createTextNode(d);
+    choiceNode.appendChild(textNode);
+    endTimePicker.append(choiceNode);
+    console.log("Looping");
+  })
+};
+
+initStartTimePicker();
+initEndTimePicker();
+
 var today = new Date();
-console.log("Now:", today)
+//console.log("Now:", today)
 var sameDay = true;/* Specify if the startDay and endDay are the same */
 var isSameDay = function() {
     startDayStr = document.getElementById('start-date').value;
     endDayStr = document.getElementById('end-date').value;
     /*console.log(startDayStr, "==", endDayStr)*/
     if (startDayStr == endDayStr){ console.log("SameDay=True"); return true;} else {console.log("SameDay=True");return false;}
-}
+};
 
 $('#start-date').datetimepicker({
                             format: "MM-DD-YYYY",
                             minDate: today,
                             });
 
-$('#start-time').datetimepicker({
-                            format: "LT",
-                            stepping: 15,
-                            });
-
 $('#end-date').datetimepicker({
                                 format: "MM-DD-YYYY",
                                 minDate: today,
                                 });
-
-$('#end-time').datetimepicker({
-                            format: "LT",
-                            stepping: 15,});
 
 /* CHANGE THE minDate FOR END DATE PICKER */
 $('#start-date').on("change.datetimepicker", function(){
@@ -162,9 +200,12 @@ $('#start-date').on("change.datetimepicker", function(){
     if (!isSameDay())
     {
         $('#end-time').datetimepicker("minDate", false);
+        initEndTimePicker();
     }
-    console.log("RE-Initialized datepicker");
-
+    else{//isSameDay
+      adjustEndTimerPicker();
+    };
+    //console.log("RE-Initialized datepicker");
 });
 
 $('#end-date').on("change.datetimepicker", function(){
@@ -176,44 +217,22 @@ $('#end-date').on("change.datetimepicker", function(){
     if (!isSameDay())
     {
         $('#end-time').datetimepicker("minDate", false);
+        initEndTimePicker();
     }
+    else {//isSameDay
+      adjustEndTimerPicker();
+    };
 });
 
-$('#start-time').on("change.datetimepicker", function(){
+//Update endTimePicker according to startTimePicker
+startTimePicker.on("change", function(){
     if (isSameDay()){
-        console.log("changed time")
-        startTimeStr = document.getElementById('start-time').value;
-        endTimeStr = document.getElementById('end-time').value;
-        console.log("StartTimeStr:", startTimeStr);
-        var startTimeDict = startTimeStr.split(":");
-        startTimeDict[2] = startTimeDict[1].split(" ")[1]; /* AM or PM */
-        startTimeDict[1] = startTimeDict[1].split(" ")[0];
-        var startTime = new Date();
-        if (startTimeDict[2] == "PM"){
-            var convertedHour = parseInt(startTimeDict[0], 10) + 12;
-            startTime.setHours(convertedHour.toString());
-            }
-        else{
-            startTime.setHours(startTimeDict[0]);
-        }
-        startTime.setMinutes(startTimeDict[1]);
-        console.log("StartTimeObj:", startTime);
-        $('#end-time').datetimepicker("minDate", startTime);
-        document.getElementById('end-time').value = startTimeStr;
-        }
-
+        adjustEndTimerPicker();
+      }
+    else{
+      initEndTimePicker();
+    };
 });
-
-$('#end-time').on("change.datetimepicker", function(){
-    startTimeStr = document.getElementById('start-time').value;
-    if (startTimeStr == "")
-    {
-        document.getElementById('start-time').value = document.getElementById('end-time').value;
-    }
-    });
-
-
-
 
 </script>
 
@@ -227,7 +246,6 @@ $(function () {
       reader.onload = function (e) {
         $("#image").attr("src", e.target.result);
         $("#modalCrop").modal("show");
-
       }
       reader.readAsDataURL(this.files[0]);
     }

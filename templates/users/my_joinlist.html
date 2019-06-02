@@ -1,0 +1,22 @@
+{% extends "users/mypage.html" %}
+{% load staticfiles %}
+
+{% block dashboard %}
+<h2>Hangouts you signed up to join</h2><br>
+<div class="row">
+ {% for event in events %}
+        <div class="col-md-3 col-xs-3 board-item">
+          <div class="card h-100">
+            <a href="{% url 'events:retrieve_event_info' event_id=event.event_id%}"><img class="card-img-top" src="{{event.image_storage_url}}" alt=""></a>
+            <div class="card-body">
+              <h4 class="card-title">
+                <a href="{% url 'events:retrieve_event_info' event_id=event.event_id%}">{{event.name}}</a>
+              </h4>
+              <p>{{event.date}}<br>{{event.start_time}} - {{event.end_time}}</p>
+            </div>
+          </div>
+        </div>
+ {% endfor %}
+    </div>
+
+{% endblock %}

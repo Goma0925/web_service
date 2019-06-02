@@ -72,14 +72,22 @@ def login(request, **kwargs):
 
 
 @login_required
-def retrieve_my_hangouts(request):
-    join_list = request.user.hangouts_to_join
+def retrieve_my_joinlist(request):
+    join_list = request.user.join_list
     events = list()
     for event_id in join_list:
         events += Event.objects.filter(event_id=event_id)
     context = {"events": events}
-    return render(request, "users/my_hangouts.html", context=context)
+    return render(request, "users/my_joinlist.html", context=context)
 
+@login_required
+def retrieve_my_hostinglist(request):
+    hosting_list = request.user.hosting_list
+    events = list()
+    for event_id in hosting_list:
+        events += Event.objects.filter(event_id=event_id)
+    context = {"events": events}
+    return render(request, "users/my_hostinglist.html", context=context)
 
 @login_required
 def retrieve_my_watchlist(request):
