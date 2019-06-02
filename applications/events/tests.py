@@ -33,7 +33,7 @@ class EventPopulator():
             profile = UserProfile()
             profile.profile_image_storage_url = settings.MEDIA_URL + "sample_profile_images/" + choose_sample_profile_img() + "/"
             profile.first_name = username.split(" ")[0]
-            profile.last_name = username.split(" ")[0]
+            profile.last_name = username.split(" ")[1]
             user.save()
             profile.user = user
             profile.save()
