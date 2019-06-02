@@ -67,14 +67,14 @@ def login(request, **kwargs):
                 return HttpResponseRedirect(reverse(redirect_to))
             else:
                 # If account is not active:
-                return HttpResponseRedirect(reverse("users:login"))
+                return HttpResponseRedirect(reverse("events:retrieve_eventboard"))
         else:
             #print("Someone tried to login and failed.")
             #print("They used email: {} and password: {}".format(email, password))
             return HttpResponseRedirect(reverse("users:login"))
     else:
         # Nothing has been provided for username or password.
-            return render(request, "users/user_login.html")
+        return render(request, "users/user_login.html")
 
 
 @login_required
