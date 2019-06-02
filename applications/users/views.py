@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 import pytz #time zone lib. Might not be needed?
 #Django modules
 from applications.users import forms
-from applications.users.models import User
+from applications.users.models import User, UserProfile
 from applications.events.models import Event
 #Additional Django libs
 
@@ -29,6 +29,9 @@ def signup(request):
             user.is_superuser = False
             user.is_active = True
             user.save()
+            profile = UserProfile()
+            profile.user = user
+            profile.save()
             #print("User saved:", user, type(user))
             #user = auth.authenticate(username=user.email, password=user.password)
             #print(auth.authenticate(username=user.email, password=user.password))

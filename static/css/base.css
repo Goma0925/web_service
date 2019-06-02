@@ -56,6 +56,10 @@ a{
   width: 100%;
 }
 
+.warning-text{
+  color:red;
+}
+
 #pagination{
   margin-left: auto;
   margin-right: auto;

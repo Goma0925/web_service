@@ -166,6 +166,8 @@ def create_event(request):
     return render(request, "events/new_event_form.html", {"event_form": event_form, "event_image_form": event_image_form,
                                                           "location_form": location_form,})
 
+def edit_event(request):
+    return render(request, "events/")
 
 def confirm_new_event(request, event_id):
     event = Event.objects.filter(event_id=event_id)

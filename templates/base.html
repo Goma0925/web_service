@@ -36,7 +36,7 @@
       <div class="nav-container">
         <div class="row">
           <div class="col-4 col-sm-3 col-md-2 col-lg-2">
-            <a class="navbar-brand" href="{% url 'events:retrieve_eventboard'%}">MeetLocals</a>
+            <a class="navbar-brand" href="{% url 'events:retrieve_eventboard'%}">MeetLocals DEMO</a>
           </div>
           <div class="col-8 col-sm-9 col-md-10 col-lg-3">
               <form type="GET" autocomplete="off" action="{{domain_name}}{% url 'events:retrieve_eventboard'%}" id="search_form">
@@ -52,7 +52,7 @@
               <ul class="navbar-nav ml-auto">
                 <li>
                 {% if DEBUG_MODE %}
-                  <a class="nav-link" href="#"><font size="3" color="red">MAINTAINANCE</font></a>
+                  <span class="nav-link" href="#"><font size="3" color="red">MAINTAINANCE</font></span>
                 </li>
                 {% endif %}
                 <li class="nav-item active">
@@ -91,7 +91,7 @@
     <!-- Footer -->
     <footer class="py-5 footer">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; My Website 2018</p>
+        <p class="m-0 text-center text-white">Amon Otsuki &copy; MeetLocals 2018</p>
       </div>
       <!-- /.container -->
     </footer>
