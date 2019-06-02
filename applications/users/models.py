@@ -137,7 +137,7 @@ class UserProfile(models.Model):
     first_name = models.CharField(blank=False, default="", max_length=30)
     last_name = models.CharField(blank=False, default="", max_length=30)
     middle_name = models.CharField(blank=True, default="", max_length=30)
-    birthday = models.DateField(blank=True)
+    birthday = models.DateField(blank=True, default=None)
     where_you_live = models.CharField(default="", max_length=160, blank=True)
     introduction = models.CharField(default="", max_length=300, blank=True)
     profile_image_storage_url = models.CharField(default="", max_length=160)
