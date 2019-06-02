@@ -187,7 +187,7 @@ LOGGING = {
 }
 
 #Deploy settings
-DEBUG = False
+DEBUG = True
 
 try:
     from .local_settings import *
