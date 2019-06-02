@@ -43,7 +43,7 @@ class Event(models.Model):
     image_storage_url = models.CharField(default="", max_length=160, blank=False)
     language = models.CharField(default="", max_length=50, blank=False)
     location = models.OneToOneField(Location, on_delete=models.CASCADE, blank=False, related_name="event")
-    description = models.CharField(max_length=160, blank=False)
+    description = models.CharField(max_length=1000, blank=False)
     tags = TaggableManager() #String of tags splitted by ","
     host_name = models.CharField(max_length=160, default="", blank=False)
     """↑Update: Delete"""

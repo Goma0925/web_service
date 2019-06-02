@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block additional_head %}
+    <link href="{% static 'css/event_info.css' %}" rel="stylesheet">
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+  <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-9" >
+          <div class="box" >
+            <center><h1>{{event.name}}</h1></center>
+            <center><img alt="Hangout Image" src={{event.image_storage_url}}/></center>
+            <div class="event_info"><br>
+              <span>Date & Time:&nbsp;&nbsp;&nbsp;{{event.start_date}}/{{event.start_time}}&nbsp;-&nbsp;{{event.end_date}}/{{event.end_time}}</span><br>
+              <span>Language:&nbsp;{{event.language}}</span><br>
+              <span>Tags: {{event.tags.all|join:", "}}</span><br>
+              <hr>
+              <br>
+            </div>
+            <center><font size="5">About this hangout</font></center>
+            <br>
+            <p>{{event.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

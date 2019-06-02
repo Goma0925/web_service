@@ -66,10 +66,26 @@ def retrieve_eventboard(request, search_query=""):
 
 
 def retrieve_event_info(request, event_id="default"):
+    event_query = Event.objects.filter(event_id=event_id)
+    if len(event_query) == 0:
+        event_exisists = False
+        event = None
+    else:
+        event = event_query[0] #Extract event obj from queryset
+        event_exisists = True
+        host_name = event.host.profile.first_name + " " + event.host.profile.last_name
+        #print(host_name)
+        host_img_url = event.host.profile.profile_image_storage_url
+        no_user_img_icon_url = settings.MEDIA_URL + "no_photo_icon.jpg/"#in case img is not available to display
+
+    user = request.user
+    is_host = False
+    if user == event.host:#for edit hangout feature
+        is_host = True
+
     if request.method == "POST":
         if request.user.is_authenticated:
             if request.POST.get("bookmark_request") == "add-to-watch":
-                user = request.user
                 if not user.has_it_in_watch_list(event_id):
                     user.add_to_watch_list(event_id)
                 else:
@@ -82,19 +98,7 @@ def retrieve_event_info(request, event_id="default"):
                     user.remove_from_join_list(event_id)
         else:
             return render(request, "users/user_login.html")
-    event_query = Event.objects.filter(event_id=event_id)
-    if len(event_query) == 0:
-        event_exisists = False
-        event = None
-    else:
-        event = event_query[0] #Extract event obj from queryset
-        event_exisists = True
-        host_name = event.host.profile.first_name + " " + event.host.profile.last_name
-        print(host_name)
-        host_img_url = event.host.profile.profile_image_storage_url
-
-    no_user_img_icon_url = settings.MEDIA_URL + "no_photo_icon.jpg/"
-
+    print("Is_host:", is_host)
     bookmark_request_form = forms.BookmarkRequestForm()
     if request.user.is_authenticated:
         added_to_watch_list = request.user.has_it_in_watch_list(event_id)
@@ -111,6 +115,7 @@ def retrieve_event_info(request, event_id="default"):
                       "host_name": host_name,
                       "host_img_url": host_img_url,
                       "no_user_img_icon": no_user_img_icon_url,
+                      "is_host": is_host,
                       }
     return render(request, "events/event_info.html", context_dict)
 
@@ -166,8 +171,19 @@ def create_event(request):
     return render(request, "events/new_event_form.html", {"event_form": event_form, "event_image_form": event_image_form,
                                                           "location_form": location_form,})
 
-def edit_event(request):
-    return render(request, "events/")
+def edit_event_info(request, event_id):
+    event_query = Event.objects.filter(event_id=event_id)
+    if len(event_query) == 0:
+        event_exisists = False
+        event = None
+    else:
+        event = event_query[0] #Extract event obj from queryset
+        event_exisists = True
+    print(event.image_storage_url)
+    print(event)
+    context_dict = {"event": event, "event_tags": event.tags.all(),
+                      }
+    return render(request, "events/edit_event_info.html", context=context_dict)
 
 def confirm_new_event(request, event_id):
     event = Event.objects.filter(event_id=event_id)

@@ -22,7 +22,10 @@
             <br>
             <p>{{event.description}}</p>
             <br>
-              <center>
+            <center>
+            {% if is_host %}
+            <a style="text-decoration: none;" href="{% url 'events:edit_event_info' event_id=event.event_id%}"><button type="button" class="btn btn-warning btn-lg" id="watch-button">Edit this hangout</button></a>
+            {% else %}
                 {% if added_to_watch_list %}
                   <button type="button" class="btn btn-warning btn-lg" id="watch-button">Remove from watch list</button>
                 {% else %}
@@ -37,7 +40,8 @@
                   {% csrf_token %}
                   {{bookmark_request_form}}
                 </form>
-              </center>
+            {% endif %}
+            </center>
           </div>
         </div>
         <div class="col-xs-12 col-md-3">

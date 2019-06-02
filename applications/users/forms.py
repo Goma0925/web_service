@@ -82,9 +82,9 @@ class ProfileImageForm(forms.Form):
         image_y = self.cleaned_data.get('y')
         image_width = self.cleaned_data.get('width')
         image_height = self.cleaned_data.get('height')
-        print("Coordinates:", image_x, image_y, image_width, image_height)
+        #print("Coordinates:", image_x, image_y, image_width, image_height)
         # Resize the image and store it in media dir.
-        image = Image.open(self.cleaned_data.get('image'))
+        image = Image.open(self.cleaned_data.get('image')).convert('RGB')
         cropped_image = image.crop((image_x, image_y, image_width + image_x, image_height + image_y))
         resized_image = cropped_image.resize((500, 500), Image.ANTIALIAS)
         file_name = "profileImg_" + str(user.id) + "_" + stored_time + img_format

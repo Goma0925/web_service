@@ -1,6 +1,7 @@
 #Django libs
 from django.shortcuts import render, redirect
 from django.contrib import auth
+from django.conf import settings
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -12,8 +13,8 @@ from applications.users import forms
 from applications.users.models import User, UserProfile
 from applications.events.models import Event
 #Additional Django libs
-
-
+#Custom modules
+from applications.users import views_support_scripts
 
 def signup(request):
     registered = False
@@ -31,6 +32,8 @@ def signup(request):
             user.save()
             profile = UserProfile()
             profile.user = user
+            profile.profile_image_storage_url = settings.MEDIA_URL + settings.PLACEHOLDER_STORAGE_URL + settings.DEFAULT_PROFILE_IMG
+            print("url,", profile.profile_image_storage_url)
             profile.save()
             #print("User saved:", user, type(user))
             #user = auth.authenticate(username=user.email, password=user.password)
@@ -77,27 +80,21 @@ def login(request, **kwargs):
 @login_required
 def retrieve_my_joinlist(request):
     join_list = request.user.join_list
-    events = list()
-    for event_id in join_list:
-        events += Event.objects.filter(event_id=event_id)
+    events = views_support_scripts.retrieve_event_objs(join_list)
     context = {"events": events}
     return render(request, "users/my_joinlist.html", context=context)
 
 @login_required
 def retrieve_my_hostinglist(request):
     hosting_list = request.user.hosting_list
-    events = list()
-    for event_id in hosting_list:
-        events += Event.objects.filter(event_id=event_id)
+    events = views_support_scripts.retrieve_event_objs(hosting_list)
     context = {"events": events}
     return render(request, "users/my_hostinglist.html", context=context)
 
 @login_required
 def retrieve_my_watchlist(request):
     watch_list = request.user.watch_list
-    events = list()
-    for event_id in watch_list:
-        events += Event.objects.filter(event_id=event_id)
+    events = views_support_scripts.retrieve_event_objs(watch_list)
     context = {"events": events}
     return render(request, "users/my_watchlist.html", context=context)
 

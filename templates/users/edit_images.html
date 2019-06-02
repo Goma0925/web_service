@@ -13,15 +13,15 @@
 {% endblock %}
 
 {% block dashboard %}
-<h3>Profile picture</h3>
+<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Profile picture</h3>
 <form method="POST" id="user-profile-form" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="row image-section">
       <div class="col-xs-12 col-md-4">
         <img class="profile-img" src="{{profile_image_storage_url}}"/>
       </div>
-      <div class="col-xs-12 col-md-6">
-        <p>Description/</p>
+      <div class="col-xs-12 col-md-7">
+        <p>Your picture is an important part of your profile because it gives other people a sense of who you are like. Please pick a photo that shows your face clearly and make sure that it does not show any personal information that you would not like to be disclosed.</p>
       </div>
     </div>
     <div class="form-group">
@@ -130,9 +130,9 @@ $("#crop_button").click(function () {
   $("#id_y").val(cropData["y"]);
   $("#id_height").val(cropData["height"]);
   $("#id_width").val(cropData["width"]);
-  console.log($("#id_x").val(), $("#id_y").val(), $("#id_height").val(), $("#id_width").val());
+  //console.log($("#id_x").val(), $("#id_y").val(), $("#id_height").val(), $("#id_width").val());
   $("#modalCrop").modal("hide");
-  console.log(cropData["x"], cropData["y"], cropData["height"], cropData["width"])
+  //console.log(cropData["x"], cropData["y"], cropData["height"], cropData["width"])
 });
 </script>
 {% endblock %}

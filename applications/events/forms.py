@@ -66,6 +66,15 @@ class EventForm(forms.ModelForm):
         #     "start_time": "Please clear the end time before you change the start time",
         # }
 
+class EventEditForm(forms.ModelForm):
+    class Meta(): #Configures the model to work with
+        model = Event
+        fields = ("name",  "start_date", "end_date", "start_time", "end_time", "language", "description", "tags",)
+        widgets = {
+                   "description": forms.Textarea(),
+                   "start_time": forms.Select(),
+                   "end_time": forms.Select(),
+                   }
 
 class LocationForm(forms.ModelForm):
     class Meta(): #Configures the model to work with
@@ -90,7 +99,7 @@ class EventImageForm(forms.Form):
         image_height = self.cleaned_data.get('height')
         #print("Coordinates:", image_x, image_y, image_width, image_height)
         # Resize the image and store it in media dir.
-        image = Image.open(self.cleaned_data.get('image'))  # event.image
+        image = Image.open(self.cleaned_data.get('image')).convert('RGB')  # event.image
         cropped_image = image.crop((image_x, image_y, image_width + image_x, image_height + image_y))
         resized_image = cropped_image.resize((700, 400), Image.ANTIALIAS)
 

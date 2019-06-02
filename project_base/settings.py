@@ -19,8 +19,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
+PLACEHOLDER_STORAGE_URL = "placeholders/"
 PROFILE_IMAGE_URL = "profile_images/"
 PROFILE_IMAGE_DIR = os.path.join(MEDIA_ROOT, "profile_images")
+DEFAULT_PROFILE_IMG = "no_photo_icon.jpg"
 HANGOUT_IMAGE_URL = "hangout_images/"
 HANGOUT_IMAGE_DIR = os.path.join(MEDIA_ROOT, "hangout_images")
 sys.path.insert(0, os.path.join(BASE_DIR, 'applications'))

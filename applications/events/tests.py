@@ -3,7 +3,7 @@ from django.conf import settings
 #from django.conf import settings
 #settings.configure()
 from applications.events.models import Event, Location
-from applications.users.models import User
+from applications.users.models import User, UserProfile
 import datetime
 from faker import Faker
 import random
@@ -11,6 +11,12 @@ import string
 
 
 #You must define the relevant variable to show where you settings.py file lives:
+
+def choose_sample_event_img():
+    return "sample_event_img" + str(random.randint(1, 7)) + ".jpg"
+
+def choose_sample_profile_img():
+    return "sample_profile_img" + str(random.randint(1, 4)) + ".jpg"
 
 class EventPopulator():
     def __init__(self):
@@ -23,20 +29,28 @@ class EventPopulator():
             username = self.faker.name()
             email = username.split(" ")[0] + "." + username.split(" ")[1] + "@gmail.com"
             user = User(email=email, is_staff=False, is_superuser=False, date_joined=datetime.datetime.now())
+            print("USERHERE:", user)
+            profile = UserProfile()
+            profile.profile_image_storage_url = settings.MEDIA_URL + "sample_profile_images/" + choose_sample_profile_img() + "/"
+            profile.first_name = username.split(" ")[0]
+            profile.last_name = username.split(" ")[0]
             user.save()
+            profile.user = user
+            profile.save()
 
             language = "English"
-            location_name = self.faker.text().split(" ")[0]
+            location_name = "Example Location" + str(random.randint(1, 100))
             location = Location.objects.get_or_create(location_name=location_name)
             tags = self.generate_tag_string()
             rand_day = self.generate_random_date()
             start_time, end_time = self.generate_random_time(rand_day)
             event_id = self.generate_event_id()
-            event_name = self.generate_event_name() + "(" + event_id + ")"
+            event_name = "Example hangout-" + str(i)
+            event_description = '"Created by tests.py" Primus gradus est, in ipso constituere res planning tuis tractabilem et finis aliquip. Primum incipere petendo a te: Quare tu res quod organizing et spes ad consequi Quid ergo? Amet congue mauris ante organizationem si nosti, omnia potest ut pars eventus victoriae dolor. Tu es trying ad hominum conscientias movendas et causa, non potest fieri per colligunt tua donations moles deinde project? Tu sperans ad attrahunt convivae L vel D?Contra occidentem fine successu quantifiable metrica ponam te ut quadrigis facilius perveniant.'
             event = Event(event_id=event_id,
-                          image_storage_url=settings.MEDIA_URL + "placeholders/placeholder_700x400.png/",
-                          name= self.generate_event_name(), start_date=rand_day, end_date=rand_day, start_time=start_time, end_time=end_time,
-                          language=language, tags=tags, location=location[0], description="Created by tests.py", host_name=username, host=user)
+                          image_storage_url=settings.MEDIA_URL + "sample_event_images/" + choose_sample_event_img() + "/",
+                          name=event_name, start_date=rand_day, end_date=rand_day, start_time=start_time, end_time=end_time,
+                          language=language, tags=tags, location=location[0], description=event_description, host_name=username, host=user)
             event.save()
             counter +=1
         print(str(counter) + " events and users have been added.")
