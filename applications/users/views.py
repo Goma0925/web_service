@@ -115,8 +115,8 @@ def edit_profile(request):
             user.profile.save()
             return redirect(reverse("users:retrieve_profile"))
         else:
-            print(profile_form.errors)
-            print(profile_image_form.errors)
+            #print(profile_form.errors)
+            #print(profile_image_form.errors)
             print("Failed")
 
     profile = request.user.profile

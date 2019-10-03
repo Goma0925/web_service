@@ -30,7 +30,7 @@ class Event(models.Model):
     description = models.CharField(max_length=160, blank=False)
     tags = models.CharField(default="", max_length=50, blank=False) #String of tags splitted by ","
     host_name = models.CharField(max_length=160, default="", blank=False)
-    """↑Update: Delete"""
+    """↑Will Update: Delete"""
     host = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True)
     #slug = models.SlugField(max_length=255, null=True)##WHat's this?
 
@@ -45,7 +45,7 @@ class Event(models.Model):
         self.location = location
         self.description = description
         self.host_name = host_name
-        """Update"""
+        """↑Will Update"""
         self.host = None
 
     def get_image_path(instance, filename):
@@ -64,5 +64,3 @@ class Event(models.Model):
 
     def __str__(self):
         return str(self.name)
-
-

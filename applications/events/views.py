@@ -21,7 +21,7 @@ def retrieve_eventboard(request, search_query=""):
     # Sort by nearest upcoming events
     if request.method == "GET" and "search_string" in request.GET:
         is_searching = True
-        search_string = request.GET['search_string']
+        search_string = request.GET['search_string']#For rendering template
         query_string = request.GET['search_string']
         entry_query = views_support_scripts.get_query(query_string, ['name'])
         events_found = Event.objects.filter(entry_query).order_by('start_date')
@@ -37,12 +37,6 @@ def retrieve_eventboard(request, search_query=""):
         #Reformat the date string
         event.start_date = str(event.start_date.month) + "/" + str(event.start_date.day)
         event.end_date = str(event.end_date.month) + "/" + str(event.end_date.day)
-        #event.start_time = str(event.end_time)
-        #event.end_time = str(event.end_time)
-        #print(event.start_date)
-        #print(event.end_date)
-        #print(event.start_time)
-        #print(event.end_time)
 
     paginator = Paginator(events_found, 24)
     try:
@@ -74,7 +68,6 @@ def retrieve_event_info(request, event_id="default"):
         event = event_query[0] #Extract event obj from queryset
         event_exisists = True
         host_name = event.host.profile.first_name + " " + event.host.profile.last_name
-        #print(host_name)
         host_img_url = event.host.profile.profile_image_storage_url
         no_user_img_icon_url = settings.MEDIA_URL + "no_photo_icon.jpg/"#in case img is not available to display
 
@@ -85,20 +78,20 @@ def retrieve_event_info(request, event_id="default"):
 
     if request.method == "POST":
         if request.user.is_authenticated:
+            user = request.user
             if request.POST.get("bookmark_request") == "add-to-watch":
                 if not user.has_it_in_watch_list(event_id):
                     user.add_to_watch_list(event_id)
                 else:
                     user.remove_from_watch_list(event_id)
             elif request.POST.get("bookmark_request") == "join-event":
-                user = request.user
                 if not user.has_it_in_join_list(event_id):
                     user.add_to_join_list(event_id)
                 else:
                     user.remove_from_join_list(event_id)
         else:
             return render(request, "users/user_login.html")
-    print("Is_host:", is_host)
+
     bookmark_request_form = forms.BookmarkRequestForm()
     if request.user.is_authenticated:
         added_to_watch_list = request.user.has_it_in_watch_list(event_id)
@@ -122,13 +115,7 @@ def retrieve_event_info(request, event_id="default"):
 @login_required
 def create_event(request):
     if request.method == "POST":
-        #Reformat the start_time/end_time.
-        #print("Request:", request.POST)
-        #print("Files from form:", request.FILES)
-        #print("Request:")
-        #print(request.POST)
-        #print(request.FILES)
-        print("Startime: " + str(request.POST["start_time"]))
+        #print("Startime: " + str(request.POST["start_time"]))
         updated_request_POST = request.POST.copy()
         start_date_datetime = datetime.strptime(str(request.POST["start_date"]), "%m-%d-%Y")
         start_time_datetime = datetime.strptime(str(request.POST["start_time"]), "%I:%M %p")
@@ -138,9 +125,11 @@ def create_event(request):
         updated_request_POST["start_time"] = str(start_time_datetime.time())
         updated_request_POST["end_date"] = str(end_date_datetime.date())
         updated_request_POST["end_time"] = str(end_time_datetime.time())
+
         event_form = forms.EventForm(updated_request_POST)
         event_image_form = forms.EventImageForm(updated_request_POST, request.FILES)
         location_form = forms.LocationForm(updated_request_POST)
+
         if event_form.is_valid() and event_image_form.is_valid() and location_form.is_valid():
             event = event_form.save(commit=False)
             location = location_form.save()
