@@ -2,33 +2,38 @@
 {% load staticfiles %}
 
 {% block dashboard %}
-<h3>Your profile</h3>
+<h3 class="inline-center-align">Your profile</h3><hr>
     <div class="form-group">
-        <label>First name:&nbsp&nbsp*This information will be public.</label>
-        <p>{{profile.first_name}}</p>
+        <label>First name:&nbsp&nbsp{{profile.first_name}}</label><br>
+        <label>*This information will be public.</label>
+        <p></p>
+        <hr>
     </div>
     <div class="form-group">
-        <label>Last name:&nbsp&nbsp*This information will be public.</label>
-        <p>{{profile.last_name}}</p>
+        <label>Last name:&nbsp&nbsp{{profile.last_name}}</label><br>
+        <label>*This information will be public.</label>
+        <hr>
     </div>
     <div class="form-group">
-        <label>Middle name:&nbsp&nbsp*This information will be public.</label>
-        <p>{{profile.middle_name}}</p>
-    </div>
-
-    <div class="form-group">
-        <label>Birthday:&nbsp&nbsp*This information will only be used for our data analysis purpose.</label>
-        <p>{{profile.birthday}}</p>
+        <label>Middle name:&nbsp&nbsp{{profile.middle_name}}</label><br>
+        <label>*This information will be public.</label>
+        <hr>
     </div>
     <div class="form-group">
-        <label for="id_where_you_live">Where you are from:&nbsp&nbsp*This information will be public.</label>
-        <p>{{profile.where_you_live}}</p>
+        <label>Birthday:&nbsp&nbsp{{profile.birthday}}</label><br>
+        <label>*This information will only be used for our data analysis purpose.</label>
+        <hr>
+    </div>
+    <div class="form-group">
+        <label for="id_where_you_live">Where you are from:&nbsp&nbsp{{profile.where_you_live}}</label><br>
+        <label>*This information will be public.</label>
+        <hr>
     </div>
     <div>
-        <label for="id_introduction">Introduce yourself:&nbsp&nbsp*This information will be public.</label>
-        <p>{{profile.introduction}}</p>
+        <label for="id_introduction">Introduce yourself:&nbsp&nbsp{{profile.introduction}}</label><br>
+        <label>*This information will be public.</label><br>
     </div><br>
     <form action="{% url 'users:edit_profile'%}">
-        <button type="submit" class="btn btn-warning">Edit</button>
+        <button type="submit" class="btn btn-warning custom-long-button">Edit</button>
     </form>
 {% endblock %}

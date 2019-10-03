@@ -2,16 +2,16 @@
 {% load staticfiles %}
 
 {% block dashboard %}
-<h2>Hangouts you are hosting</h2><br>
+<h2 class="inline-center-align">Hangouts you are hosting</h2><hr>
 <div class="row">
  {% for event in events %}
         <div class="col-md-3 col-xs-3 board-item">
           <div class="card h-100">
             <a href="{% url 'events:retrieve_event_info' event_id=event.event_id%}"><img class="card-img-top" src="{{event.image_storage_url}}" alt=""></a>
             <div class="card-body">
-              <h4 class="card-title">
+              <p class="card-title">
                 <a href="{% url 'events:retrieve_event_info' event_id=event.event_id%}">{{event.name}}</a>
-              </h4>
+              </p><hr>
               <p>{{event.start_date}}</p>
             </div>
           </div>
