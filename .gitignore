@@ -5,6 +5,8 @@ local_settings.py
 *.py[co]
 documents
 venv
-deploy.sh
+logfile
 logs.sh
 .DS_Store
+Note
+sqlite3.db
