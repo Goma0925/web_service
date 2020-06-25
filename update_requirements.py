@@ -1,7 +1,7 @@
 import pkg_resources
 import sys
 
-#Write the modules installed of the current virtualenv into requirements.txt
+#Write the modules installed in the current virtualenv into requirements.txt
 print("Interpreter:")
 print(sys.executable)
 print("Updating the requirements.txt...")

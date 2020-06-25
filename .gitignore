@@ -7,3 +7,4 @@ documents
 venv
 deploy.sh
 logs.sh
+.DS_Store

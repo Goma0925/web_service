@@ -128,7 +128,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         hosting_list = self.hosting_list
         hosting_list.append(event_id)
         self.hosting_list = hosting_list
-        print(self, "added", event_id, "to hosting_list")
+        #print(self, "added", event_id, "to hosting_list")
         self.save()
 
 
