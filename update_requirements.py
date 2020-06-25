@@ -1,5 +1,6 @@
 import pkg_resources
 import sys
+#A code snippet to make a list of required libraries
 
 #Write the modules installed in the current virtualenv into requirements.txt
 print("Interpreter:")
