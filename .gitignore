@@ -10,3 +10,4 @@ logs.sh
 .DS_Store
 Note
 sqlite3.db
+project_base/SecurityInfo.py

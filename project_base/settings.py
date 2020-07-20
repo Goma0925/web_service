@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os, sys
 import django_heroku
+import SecurityInfo
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 DOMAIN = "https://meetlocals.herokuapp.com"
@@ -31,7 +32,7 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'applications'))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'mf#0959#k*ximj%r+8#-y8g&l)5-c^56ji=+w9p#!7%3pgm_q-'
+SECRET_KEY = SecurityInfo.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
@@ -114,11 +115,11 @@ WSGI_APPLICATION = 'project_base.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd2a7km1ved6a68',
-        'USER': 'iswycrabisshnd',
-        'PASSWORD': '26bacdb569b92734a416b2bda3bf18f45a4e1bdbb3e76cbdf37ede7cd7888eec',
-        'HOST': 'ec2-23-21-147-71.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'NAME': SecurityInfo.DB_NAME,
+        'USER': SecurityInfo.DB_USER,
+        'PASSWORD': SecurityInfo.DB_PASSWORD,
+        'HOST': SecurityInfo.DB_HOST,
+        'PORT': SecurityInfo.DB_PORT,
     }
 }
 
